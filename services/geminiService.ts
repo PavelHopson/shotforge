@@ -36,6 +36,38 @@ const getGeminiClient = (): GoogleGenAI => {
 // Legacy alias for existing code
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
 
+// --- Ollama provider ---
+
+const getOllamaBaseUrl = (): string => {
+  const config = getAIConfig();
+  return config.baseUrl || 'http://localhost:11434';
+};
+
+/**
+ * Calls the Ollama local API for text generation.
+ */
+export const callOllama = async (prompt: string, model?: string, baseUrl?: string): Promise<string> => {
+  const url = baseUrl || getOllamaBaseUrl();
+  const ollamaModel = model || getAIConfig().model || 'huihui-ai/Huihui-Qwen3.5-35B-A3B-abliterated';
+
+  const response = await fetch(`${url}/api/generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: ollamaModel,
+      prompt,
+      stream: false
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Ollama error: ${response.status} ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.response || '';
+};
+
 // --- Utility from ModelForge ---
 
 /**
@@ -86,23 +118,35 @@ export const generateDirectorPrompts = async (config: UserConfig): Promise<strin
   `;
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: userPrompt,
-      config: {
-        systemInstruction: systemInstruction,
-        responseMimeType: 'application/json'
-      }
-    });
+    const currentConfig = getAIConfig();
 
-    const text = response.text;
+    let text: string | undefined;
+
+    if (currentConfig.provider === 'ollama') {
+      const ollamaPrompt = `${systemInstruction}\n\n${userPrompt}\n\nRespond with a JSON array of 4 strings.`;
+      const raw = await callOllama(ollamaPrompt);
+      // Extract JSON array from response
+      const match = raw.match(/\[[\s\S]*\]/);
+      text = match ? match[0] : raw;
+    } else {
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: userPrompt,
+        config: {
+          systemInstruction: systemInstruction,
+          responseMimeType: 'application/json'
+        }
+      });
+      text = response.text;
+    }
+
     if (!text) return ["Error generating prompts"];
 
     const prompts = JSON.parse(text);
     return Array.isArray(prompts) ? prompts : [text];
 
   } catch (error) {
-    console.error("Gemini Director failed:", error);
+    console.error("Director prompt generation failed:", error);
     return [
       `Professional portrait of ${config.age} year old ${config.gender}, ${selectedPreset.name} style, ${config.lighting}, 8k, photorealistic.`
     ];
@@ -184,6 +228,24 @@ export const generateImage = async (
   aspectRatio: AspectRatio = "1:1",
   resolution: ImageResolution = "1K"
 ): Promise<string> => {
+  const currentConfig = getAIConfig();
+
+  // Ollama can't generate images — enhance prompt and return picsum fallback
+  if (currentConfig.provider === 'ollama') {
+    let width = 1024;
+    let height = 1024;
+    if (aspectRatio === '9:16') { width = 720; height = 1280; }
+    if (aspectRatio === '16:9') { width = 1280; height = 720; }
+    if (aspectRatio === '3:4') { width = 768; height = 1024; }
+    if (aspectRatio === '4:3') { width = 1024; height = 768; }
+
+    try {
+      await callOllama(`Enhance this image prompt for a photographer: ${prompt}`);
+    } catch { /* ignore enhancement errors */ }
+
+    return `https://picsum.photos/${width}/${height}?random=${Date.now()}`;
+  }
+
   if (!process.env.API_KEY) {
     // Return a random placeholder if no key
     let width = 1024;

@@ -79,18 +79,20 @@ export interface StyleAnalysis {
 
 // --- Multi-provider AI Settings ---
 
-export type AIProvider = 'gemini' | 'openai' | 'openrouter';
+export type AIProvider = 'gemini' | 'openai' | 'openrouter' | 'ollama';
 
 export interface AIProviderConfig {
   provider: AIProvider;
   apiKey: string;
   model: string;
+  baseUrl?: string;
 }
 
 export const PROVIDER_MODELS: Record<AIProvider, string[]> = {
   gemini: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-3-pro-image-preview'],
   openai: ['gpt-image-1', 'dall-e-3', 'gpt-4o'],
-  openrouter: ['google/gemini-2.5-flash', 'openai/gpt-4o', 'anthropic/claude-sonnet-4', 'meta-llama/llama-4-maverick']
+  openrouter: ['google/gemini-2.5-flash', 'openai/gpt-4o', 'anthropic/claude-sonnet-4', 'meta-llama/llama-4-maverick'],
+  ollama: ['huihui-ai/Huihui-Qwen3.5-35B-A3B-abliterated', 'llama3.2-vision', 'llava']
 };
 
 // --- Face Fusion Types (from AI-Face-Fusion-Pro) ---

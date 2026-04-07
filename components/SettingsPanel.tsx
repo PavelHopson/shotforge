@@ -11,13 +11,15 @@ interface SettingsPanelProps {
 const PROVIDER_LABELS: Record<AIProvider, string> = {
   gemini: 'Google Gemini',
   openai: 'OpenAI',
-  openrouter: 'OpenRouter'
+  openrouter: 'OpenRouter',
+  ollama: 'Ollama'
 };
 
 const PROVIDER_DESCRIPTIONS: Record<AIProvider, string> = {
   gemini: 'Best for image generation & face fusion. Supports Gemini 2.5 Flash/Pro.',
   openai: 'DALL-E 3 and GPT-4o for text-to-image and analysis.',
-  openrouter: 'Access multiple providers through a single API. Pay-per-token.'
+  openrouter: 'Access multiple providers through a single API. Pay-per-token.',
+  ollama: 'Run AI models locally. Free, private, no API key needed.'
 };
 
 export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose }) => {
@@ -37,7 +39,8 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
     setConfig(prev => ({
       ...prev,
       provider,
-      model: models[0]
+      model: models[0],
+      ...(provider === 'ollama' ? { baseUrl: prev.baseUrl || 'http://localhost:11434' } : {})
     }));
     setSaved(false);
   };
@@ -77,7 +80,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
             <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
               Provider
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {(Object.keys(PROVIDER_LABELS) as AIProvider[]).map((provider) => (
                 <button
                   key={provider}
@@ -113,30 +116,57 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
             </select>
           </div>
 
-          {/* API Key */}
-          <div>
-            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
-              API Key
-            </label>
-            <div className="relative">
+          {/* API Key or Base URL */}
+          {config.provider === 'ollama' ? (
+            <div>
+              <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+                Base URL
+              </label>
               <input
-                type={showKey ? 'text' : 'password'}
-                value={config.apiKey}
-                onChange={(e) => { setConfig(prev => ({ ...prev, apiKey: e.target.value })); setSaved(false); }}
-                placeholder={`Enter your ${PROVIDER_LABELS[config.provider]} API key`}
-                className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2.5 pr-10 text-sm text-white font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                type="text"
+                value={config.baseUrl || 'http://localhost:11434'}
+                onChange={(e) => { setConfig(prev => ({ ...prev, baseUrl: e.target.value })); setSaved(false); }}
+                placeholder="http://localhost:11434"
+                className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-white font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               />
-              <button
-                onClick={() => setShowKey(!showKey)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-zinc-500 hover:text-zinc-300 transition-colors"
-              >
-                {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+              <p className="text-xs text-zinc-600 mt-1.5">
+                Ollama API endpoint. Default: http://localhost:11434
+              </p>
+              <div className="mt-3 bg-zinc-950 border border-zinc-800 rounded-lg p-3">
+                <p className="text-xs text-amber-400 font-medium mb-1">Setup:</p>
+                <p className="text-xs text-zinc-400 font-mono">
+                  ollama run huihui-ai/Huihui-Qwen3.5-35B-A3B-abliterated
+                </p>
+                <p className="text-xs text-zinc-500 mt-2">
+                  Ollama enhances prompts locally but uses placeholder images (no image generation).
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-zinc-600 mt-1.5">
-              Stored locally in your browser. Never sent to our servers.
-            </p>
-          </div>
+          ) : (
+            <div>
+              <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+                API Key
+              </label>
+              <div className="relative">
+                <input
+                  type={showKey ? 'text' : 'password'}
+                  value={config.apiKey}
+                  onChange={(e) => { setConfig(prev => ({ ...prev, apiKey: e.target.value })); setSaved(false); }}
+                  placeholder={`Enter your ${PROVIDER_LABELS[config.provider]} API key`}
+                  className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2.5 pr-10 text-sm text-white font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+                <button
+                  onClick={() => setShowKey(!showKey)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              <p className="text-xs text-zinc-600 mt-1.5">
+                Stored locally in your browser. Never sent to our servers.
+              </p>
+            </div>
+          )}
 
           {/* Active Status */}
           <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4">
@@ -147,7 +177,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
                   {PROVIDER_LABELS[config.provider]} / {config.model}
                 </p>
               </div>
-              <div className={`w-3 h-3 rounded-full ${config.apiKey ? 'bg-green-500' : 'bg-zinc-600'}`} />
+              <div className={`w-3 h-3 rounded-full ${config.apiKey || config.provider === 'ollama' ? 'bg-green-500' : 'bg-zinc-600'}`} />
             </div>
           </div>
         </div>
