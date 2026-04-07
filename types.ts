@@ -76,3 +76,34 @@ export interface StyleAnalysis {
   description: string;
   rawResponse: string;
 }
+
+// --- Multi-provider AI Settings ---
+
+export type AIProvider = 'gemini' | 'openai' | 'openrouter';
+
+export interface AIProviderConfig {
+  provider: AIProvider;
+  apiKey: string;
+  model: string;
+}
+
+export const PROVIDER_MODELS: Record<AIProvider, string[]> = {
+  gemini: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-3-pro-image-preview'],
+  openai: ['gpt-image-1', 'dall-e-3', 'gpt-4o'],
+  openrouter: ['google/gemini-2.5-flash', 'openai/gpt-4o', 'anthropic/claude-sonnet-4', 'meta-llama/llama-4-maverick']
+};
+
+// --- Face Fusion Types (from AI-Face-Fusion-Pro) ---
+
+export type FusionAssetType = 'face' | 'clothing' | 'shoes' | 'accessories' | 'hairstyle' | 'style';
+
+export interface FusionImageFile {
+  data: string; // base64
+  mimeType: string;
+}
+
+export type FusionAssetMap = Partial<Record<FusionAssetType, FusionImageFile>>;
+
+// --- App Mode ---
+
+export type AppMode = 'photographer' | 'face-fusion' | 'style-transfer';
