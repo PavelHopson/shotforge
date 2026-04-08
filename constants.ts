@@ -1,4 +1,4 @@
-import { Preset, Gender, Emotion, Lighting, CameraAngle } from './types';
+import { Preset, Gender, Emotion, Lighting, CameraAngle, Pose } from './types';
 
 export const PRESETS: Preset[] = [
   {
@@ -157,5 +157,9 @@ export const INITIAL_CONFIG = {
   lighting: Lighting.STUDIO,
   camera: CameraAngle.PORTRAIT_85MM,
   clothing: 'Business Casual',
-  presetId: 'vogue-editorial'
+  presetId: 'vogue-editorial',
+  background: '',
+  pose: Pose.NATURAL,
+  accessories: '',
+  imageCount: 4,
 };

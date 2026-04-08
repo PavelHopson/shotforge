@@ -3,21 +3,28 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { UploadSection } from './components/UploadSection';
 import { ConfigPanel } from './components/ConfigPanel';
+import { PromptEditor } from './components/PromptEditor';
+import { ProgressOverlay } from './components/ProgressOverlay';
 import { ResultsGallery } from './components/ResultsGallery';
 import { SettingsPanel } from './components/SettingsPanel';
 import { OnboardingGuide } from './components/OnboardingGuide';
+import { HistoryPanel } from './components/HistoryPanel';
+import { CustomPresetModal } from './components/CustomPresetModal';
 import { FaceFusionMode } from './components/FaceFusionMode';
-import { AppStep, UserConfig, GeneratedPhoto, FaceAnalysis, AppState, AppMode } from './types';
-import { INITIAL_CONFIG } from './constants';
+import { AppStep, UserConfig, GeneratedPhoto, FaceAnalysis, AppState, AppMode, GenerationProgress, GenerationSession, Preset } from './types';
+import { INITIAL_CONFIG, PRESETS } from './constants';
 import { generateDirectorPrompts, analyzeImageFeatures, generateImage, analyzeImageStyle } from './services/geminiService';
+import { saveSession } from './services/historyService';
 
 const App: React.FC = () => {
-  // --- Mode & Settings ---
+  // --- Mode & Panels ---
   const [mode, setMode] = useState<AppMode>('photographer');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [customPresetOpen, setCustomPresetOpen] = useState(false);
 
-  // --- AI Photographer state (original) ---
+  // --- AI Photographer state ---
   const [step, setStep] = useState<AppStep>('HERO');
   const [config, setConfig] = useState<UserConfig>(INITIAL_CONFIG);
   const [generatedPhotos, setGeneratedPhotos] = useState<GeneratedPhoto[]>([]);
@@ -28,9 +35,23 @@ const App: React.FC = () => {
   const [uploadedBase64, setUploadedBase64] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // --- Prompt Editor ---
+  const [generatedPrompts, setGeneratedPrompts] = useState<string[]>([]);
+
+  // --- Progress ---
+  const [progress, setProgress] = useState<GenerationProgress>({
+    currentStep: 0, totalSteps: 5, stepLabel: '', percent: 0
+  });
+
+  // --- Batch mode ---
+  const [batchMode, setBatchMode] = useState(false);
+  const [batchPresets, setBatchPresets] = useState<string[]>([]);
+
+  // --- Custom presets ---
+  const [customPresetsList, setCustomPresetsList] = useState<Preset[]>([]);
+
   const handleModeChange = (newMode: AppMode) => {
     setMode(newMode);
-    // Reset photographer flow when switching modes
     if (newMode !== 'photographer') {
       setStep('HERO');
     }
@@ -51,7 +72,6 @@ const App: React.FC = () => {
         analyzeImageFeatures(base64),
         analyzeImageStyle(base64)
       ]);
-
       setFaceAnalysis(features);
       setStyleDescription(style);
       setAppState('idle');
@@ -66,48 +86,158 @@ const App: React.FC = () => {
     }
   };
 
-  const handleGenerate = async () => {
+  // Step 1: Generate prompts and show editor
+  const handleGeneratePrompts = async () => {
     setIsLoading(true);
-    setAppState('generating');
     setErrorMessage(null);
 
     try {
       const prompts = await generateDirectorPrompts(config);
+      setGeneratedPrompts(prompts);
+      setStep('PROMPTS');
+      setAppState('prompts-ready');
+      setIsLoading(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      console.error("Prompt generation failed:", error);
+      setErrorMessage('Failed to generate prompts. Please try again.');
+      setIsLoading(false);
+    }
+  };
 
-      const photoPromises = prompts.map(async (prompt, index) => {
-        try {
-          const url = await generateImage(
-            prompt,
-            uploadedBase64,
-            '3:4',
-            '1K'
-          );
-          return {
-            id: `photo-${Date.now()}-${index}`,
-            url,
-            promptUsed: prompt
-          };
-        } catch {
-          return {
-            id: `photo-${Date.now()}-${index}`,
-            url: `https://picsum.photos/768/1024?random=${Date.now() + index}`,
-            promptUsed: prompt
-          };
+  // Step 1 (batch): Generate for multiple presets
+  const handleBatchGenerate = async () => {
+    if (batchPresets.length === 0) return;
+
+    setIsLoading(true);
+    setStep('PROCESSING');
+    setErrorMessage(null);
+
+    const allPhotos: GeneratedPhoto[] = [];
+    const totalImages = batchPresets.length * config.imageCount;
+    const totalSteps = totalImages + batchPresets.length; // prompts + images
+    let currentStep = 0;
+
+    try {
+      for (const presetId of batchPresets) {
+        const batchConfig = { ...config, presetId };
+        currentStep++;
+        const presetName = [...PRESETS, ...customPresetsList].find(p => p.id === presetId)?.name || presetId;
+        setProgress({ currentStep, totalSteps, stepLabel: `Промпты: ${presetName}`, percent: (currentStep / totalSteps) * 100 });
+
+        const prompts = await generateDirectorPrompts(batchConfig);
+
+        for (let i = 0; i < Math.min(prompts.length, config.imageCount); i++) {
+          currentStep++;
+          setProgress({ currentStep, totalSteps, stepLabel: `${presetName}: фото ${i + 1}`, percent: (currentStep / totalSteps) * 100 });
+
+          try {
+            const url = await generateImage(prompts[i], uploadedBase64, '3:4', '1K');
+            allPhotos.push({ id: `photo-${Date.now()}-${presetId}-${i}`, url, promptUsed: prompts[i] });
+          } catch {
+            allPhotos.push({
+              id: `photo-${Date.now()}-${presetId}-${i}`,
+              url: `https://picsum.photos/768/1024?random=${Date.now() + i}`,
+              promptUsed: prompts[i]
+            });
+          }
         }
-      });
+      }
 
-      const newPhotos = await Promise.all(photoPromises);
-      setGeneratedPhotos(newPhotos);
+      setGeneratedPhotos(allPhotos);
+      saveToHistory(allPhotos, `Batch: ${batchPresets.length} presets`);
       setAppState('complete');
       setIsLoading(false);
       setStep('RESULTS');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
-      console.error("Generation pipeline failed:", error);
+      console.error("Batch generation failed:", error);
+      setAppState('error');
+      setErrorMessage('Batch generation failed. Please try again.');
+      setIsLoading(false);
+      setStep('CONFIG');
+    }
+  };
+
+  // Step 2: Regenerate prompts (from editor)
+  const handleRegeneratePrompts = async () => {
+    setIsLoading(true);
+    try {
+      const prompts = await generateDirectorPrompts(config);
+      setGeneratedPrompts(prompts);
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+    }
+  };
+
+  // Step 3: Confirm prompts and generate images
+  const handleConfirmPrompts = async (editedPrompts: string[]) => {
+    setStep('PROCESSING');
+    setIsLoading(true);
+    setAppState('generating');
+    setErrorMessage(null);
+
+    const totalSteps = editedPrompts.length + 1;
+    setProgress({ currentStep: 0, totalSteps, stepLabel: 'Подготовка...', percent: 0 });
+
+    try {
+      const newPhotos: GeneratedPhoto[] = [];
+
+      for (let i = 0; i < editedPrompts.length; i++) {
+        setProgress({
+          currentStep: i + 1,
+          totalSteps,
+          stepLabel: `Генерация фото ${i + 1} из ${editedPrompts.length}`,
+          percent: ((i + 1) / totalSteps) * 100
+        });
+
+        try {
+          const url = await generateImage(editedPrompts[i], uploadedBase64, '3:4', '1K');
+          newPhotos.push({ id: `photo-${Date.now()}-${i}`, url, promptUsed: editedPrompts[i] });
+        } catch {
+          newPhotos.push({
+            id: `photo-${Date.now()}-${i}`,
+            url: `https://picsum.photos/768/1024?random=${Date.now() + i}`,
+            promptUsed: editedPrompts[i]
+          });
+        }
+      }
+
+      setGeneratedPhotos(newPhotos);
+      const presetName = [...PRESETS, ...customPresetsList].find(p => p.id === config.presetId)?.name || 'Custom';
+      saveToHistory(newPhotos, presetName);
+      setAppState('complete');
+      setIsLoading(false);
+      setStep('RESULTS');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      console.error("Generation failed:", error);
       setAppState('error');
       setErrorMessage('Generation failed. Please try again.');
       setIsLoading(false);
+      setStep('CONFIG');
     }
+  };
+
+  const saveToHistory = (photos: GeneratedPhoto[], presetName: string) => {
+    const session: GenerationSession = {
+      id: `session-${Date.now()}`,
+      timestamp: Date.now(),
+      mode,
+      presetName,
+      config,
+      photos,
+      uploadedThumbnail: uploadedBase64 ? uploadedBase64.slice(0, 200) : undefined,
+    };
+    saveSession(session);
+  };
+
+  const handleLoadSession = (session: GenerationSession) => {
+    setGeneratedPhotos(session.photos);
+    setConfig(session.config);
+    setStep('RESULTS');
+    setAppState('complete');
   };
 
   const handleReset = () => {
@@ -119,6 +249,19 @@ const App: React.FC = () => {
     setUploadedBase64(null);
     setAppState('idle');
     setErrorMessage(null);
+    setGeneratedPrompts([]);
+    setBatchMode(false);
+    setBatchPresets([]);
+  };
+
+  const handleBatchToggle = (presetId: string) => {
+    setBatchPresets(prev =>
+      prev.includes(presetId) ? prev.filter(id => id !== presetId) : [...prev, presetId]
+    );
+  };
+
+  const handleCustomPresetCreated = (preset: Preset) => {
+    setCustomPresetsList(prev => [...prev, preset]);
   };
 
   // --- Render mode content ---
@@ -154,29 +297,44 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {appState === 'generating' && (
-            <div className="max-w-4xl mx-auto px-4 mb-4">
-              <div className="bg-sf-500/10 border border-sf-500/30 rounded-xl p-4 flex items-center gap-3">
-                <div className="w-5 h-5 border-2 border-sf-400 border-t-transparent rounded-full animate-spin" />
-                <div>
-                  <p className="text-sf-200 text-sm font-medium">Creating Masterpiece</p>
-                  <p className="text-sf-400/70 text-xs">Generating images with Gemini AI...</p>
-                </div>
-              </div>
-            </div>
-          )}
-
           <ConfigPanel
             config={config}
             setConfig={setConfig}
-            onGenerate={handleGenerate}
+            onGenerate={batchMode ? handleBatchGenerate : handleGeneratePrompts}
             isLoading={isLoading}
+            onCreatePreset={() => setCustomPresetOpen(true)}
+            batchPresets={batchPresets}
+            onBatchToggle={handleBatchToggle}
+            batchMode={batchMode}
+            onBatchModeToggle={() => setBatchMode(!batchMode)}
           />
         </div>
       )}
 
+      {step === 'PROMPTS' && (
+        <PromptEditor
+          prompts={generatedPrompts}
+          onConfirm={handleConfirmPrompts}
+          onRegenerate={handleRegeneratePrompts}
+          onBack={() => { setStep('CONFIG'); setAppState('idle'); }}
+          isRegenerating={isLoading}
+          presetName={[...PRESETS, ...customPresetsList].find(p => p.id === config.presetId)?.name || 'Custom'}
+        />
+      )}
+
+      {step === 'PROCESSING' && (
+        <ProgressOverlay
+          progress={progress}
+          presetName={[...PRESETS, ...customPresetsList].find(p => p.id === config.presetId)?.name || 'Batch'}
+        />
+      )}
+
       {step === 'RESULTS' && (
-        <ResultsGallery photos={generatedPhotos} onReset={handleReset} />
+        <ResultsGallery
+          photos={generatedPhotos}
+          onReset={handleReset}
+          uploadedImage={uploadedBase64}
+        />
       )}
     </>
   );
@@ -207,6 +365,7 @@ const App: React.FC = () => {
         onModeChange={handleModeChange}
         onSettingsOpen={() => setSettingsOpen(true)}
         onGuideOpen={() => setGuideOpen(true)}
+        onHistoryOpen={() => setHistoryOpen(true)}
       />
 
       <main className="pt-16 pb-20">
@@ -226,9 +385,11 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* Modals */}
+      {/* Modals & Panels */}
       <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <OnboardingGuide isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
+      <HistoryPanel isOpen={historyOpen} onClose={() => setHistoryOpen(false)} onLoadSession={handleLoadSession} />
+      <CustomPresetModal isOpen={customPresetOpen} onClose={() => setCustomPresetOpen(false)} onCreated={handleCustomPresetCreated} />
     </div>
   );
 };

@@ -27,12 +27,26 @@ export enum CameraAngle {
   FULL_BODY = 'Full Body Fashion'
 }
 
+export enum Pose {
+  NATURAL = 'Natural / Relaxed',
+  STANDING = 'Standing Confident',
+  SITTING = 'Sitting Casual',
+  WALKING = 'Walking Dynamic',
+  LEANING = 'Leaning Against Wall',
+  CROSSED_ARMS = 'Arms Crossed',
+  HANDS_IN_POCKETS = 'Hands in Pockets',
+  LOOKING_AWAY = 'Looking Away / Profile'
+}
+
 export interface Preset {
   id: string;
   name: string;
   description: string;
   image: string;
   isPro: boolean;
+  isCustom?: boolean;
+  config?: Partial<UserConfig>;
+  createdAt?: number;
 }
 
 export interface UserConfig {
@@ -43,6 +57,11 @@ export interface UserConfig {
   camera: CameraAngle;
   clothing: string;
   presetId: string;
+  // Extended settings
+  background: string;
+  pose: Pose;
+  accessories: string;
+  imageCount: number;
 }
 
 export interface GeneratedPhoto {
@@ -51,7 +70,7 @@ export interface GeneratedPhoto {
   promptUsed: string;
 }
 
-export type AppStep = 'HERO' | 'UPLOAD' | 'CONFIG' | 'PROCESSING' | 'RESULTS';
+export type AppStep = 'HERO' | 'UPLOAD' | 'CONFIG' | 'PROMPTS' | 'PROCESSING' | 'RESULTS';
 
 // --- Merged from ModelForge ---
 
@@ -70,7 +89,7 @@ export type ImageResolution = '1K' | '2K';
 
 export type GenerationMode = 'portrait' | 'style-transfer' | 'streamer-asset';
 
-export type AppState = 'idle' | 'uploading' | 'analyzing' | 'generating' | 'complete' | 'error';
+export type AppState = 'idle' | 'uploading' | 'analyzing' | 'generating' | 'prompts-ready' | 'complete' | 'error';
 
 export interface StyleAnalysis {
   description: string;
@@ -109,3 +128,24 @@ export type FusionAssetMap = Partial<Record<FusionAssetType, FusionImageFile>>;
 // --- App Mode ---
 
 export type AppMode = 'photographer' | 'face-fusion' | 'style-transfer';
+
+// --- Generation History ---
+
+export interface GenerationSession {
+  id: string;
+  timestamp: number;
+  mode: AppMode;
+  presetName: string;
+  config: UserConfig;
+  photos: GeneratedPhoto[];
+  uploadedThumbnail?: string;
+}
+
+// --- Generation Progress ---
+
+export interface GenerationProgress {
+  currentStep: number;
+  totalSteps: number;
+  stepLabel: string;
+  percent: number;
+}
