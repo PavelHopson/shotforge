@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Aperture, Clock, Zap } from 'lucide-react';
+import { ArrowRight, Aperture, Clock, Zap, Star } from 'lucide-react';
 import { Button } from './Button';
 
 interface HeroProps {
@@ -8,51 +8,70 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onStart }) => {
   return (
-    <div className="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
-      {/* Background gradients */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-indigo-900/20 blur-[120px] rounded-full -z-10 pointer-events-none" />
-      
+    <div className="relative pt-28 pb-16 sm:pt-36 sm:pb-20 overflow-hidden mesh-bg">
+      {/* Glow orbs */}
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full -z-10 pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, transparent 70%)' }} />
+      <div className="absolute top-40 right-1/4 w-[300px] h-[300px] rounded-full -z-10 pointer-events-none animate-float" style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 60%)' }} />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-900/30 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-8 uppercase tracking-wider">
-          <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-          Now Live: Flux.1 Pro Model
-        </div>
-        
-        <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-white mb-8 max-w-4xl mx-auto leading-[1.1]">
-          Professional photoshoot <br className="hidden sm:block" />
-          in <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">3 minutes</span>.
-        </h1>
-        
-        <p className="text-xl text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-          Skip the $2,000 photographer fee. Upload a selfie and let our AI director (Gemini 3 Pro) engineer the perfect studio shots for you.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button size="lg" onClick={onStart} className="w-full sm:w-auto group">
-            Start Your Session
-            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-            View Gallery
-          </Button>
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sf-900/30 border border-sf-700/30 mb-8 animate-fade-in">
+          <span className="w-1.5 h-1.5 rounded-full bg-sf-400 animate-pulse"></span>
+          <span className="text-xs font-semibold text-sf-300 tracking-wide">21 стиль · Gemini 3 Pro · Face Fusion</span>
         </div>
 
-        <div className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto border-t border-zinc-800 pt-8">
-          <div className="flex flex-col items-center gap-2">
-            <Aperture className="w-6 h-6 text-indigo-500 mb-2" />
-            <h3 className="font-semibold text-white">Hyper-Realistic</h3>
-            <p className="text-sm text-zinc-500">Flux.1 Pro + SDXL engines</p>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Clock className="w-6 h-6 text-indigo-500 mb-2" />
-            <h3 className="font-semibold text-white">Ready in 180s</h3>
-            <p className="text-sm text-zinc-500">Fast GPU processing</p>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Zap className="w-6 h-6 text-indigo-500 mb-2" />
-            <h3 className="font-semibold text-white">AI Director</h3>
-            <p className="text-sm text-zinc-500">Gemini prompted lighting</p>
-          </div>
+        {/* Heading */}
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-sf-50 mb-6 max-w-4xl mx-auto leading-[1.08] animate-slide-up">
+          Профессиональная{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-sf-400 via-sf-300 to-sf-400" style={{ backgroundSize: '200% auto', animation: 'shimmer 4s ease infinite' }}>
+            фотосессия
+          </span>
+          <br className="hidden sm:block" />
+          за 3 минуты
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-lg text-dim mb-10 max-w-xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          Загрузите селфи — AI-режиссёр создаст студийные снимки в любом стиле. От Old Money до Cyberpunk.
+        </p>
+
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <button
+            onClick={onStart}
+            className="group flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white text-sm transition-all duration-300 animate-glow"
+            style={{ background: 'linear-gradient(135deg, #7c3aed, #8b5cf6)', boxShadow: '0 4px 20px rgba(124,58,237,0.3)' }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(124,58,237,0.4)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(124,58,237,0.3)'; }}
+          >
+            Начать сессию
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+          <button className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-dim text-sm border border-glass-border hover:border-sf-700/50 hover:text-sf-300 transition-all bg-glass">
+            <Star className="w-3.5 h-3.5" />
+            Примеры работ
+          </button>
+        </div>
+
+        {/* Features */}
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+          {[
+            { icon: <Aperture className="w-5 h-5" />, title: 'Гиперреализм', desc: '21 стиль от Vogue до LEGO' },
+            { icon: <Clock className="w-5 h-5" />, title: '180 секунд', desc: 'GPU-обработка в реальном времени' },
+            { icon: <Zap className="w-5 h-5" />, title: 'AI Режиссёр', desc: 'Gemini подбирает свет и ракурс' },
+          ].map((f, i) => (
+            <div
+              key={f.title}
+              className="flex flex-col items-center gap-2 p-5 rounded-2xl bg-glass border border-glass-border hover:border-sf-800/50 transition-all animate-slide-up"
+              style={{ animationDelay: `${0.3 + i * 0.1}s` }}
+            >
+              <div className="w-10 h-10 rounded-xl bg-sf-900/40 border border-sf-800/40 flex items-center justify-center text-sf-400 mb-1">
+                {f.icon}
+              </div>
+              <h3 className="font-semibold text-sm text-sf-100">{f.title}</h3>
+              <p className="text-xs text-dim">{f.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
