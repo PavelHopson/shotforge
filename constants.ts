@@ -112,6 +112,34 @@ export const PRESETS: Preset[] = [
     description: 'Extreme close-up macro photography, visible pores, fine lines, natural sheen, unretouched editorial beauty.',
     image: 'https://picsum.photos/400/600?random=16',
     isPro: true
+  },
+  {
+    id: 'interstellar',
+    name: 'Interstellar Cinematic',
+    description: 'IMAX 70mm film look, vast landscapes, anamorphic lens flares, deep blacks, muted earth tones, Hoyte van Hoytema cinematography.',
+    image: 'https://picsum.photos/400/600?random=17',
+    isPro: true
+  },
+  {
+    id: 'blade-runner',
+    name: 'Blade Runner Noir',
+    description: 'Neon-soaked dystopia, rain, fog, volumetric light, teal-orange color grade, Roger Deakins lighting, 35mm anamorphic.',
+    image: 'https://picsum.photos/400/600?random=18',
+    isPro: true
+  },
+  {
+    id: 'ghibli-anime',
+    name: 'Studio Ghibli',
+    description: 'Soft watercolor backgrounds, hand-drawn feel, lush green nature, warm pastel palette, Miyazaki-style whimsical atmosphere.',
+    image: 'https://picsum.photos/400/600?random=19',
+    isPro: false
+  },
+  {
+    id: 'pixar-3d',
+    name: 'Pixar / Disney 3D',
+    description: 'Stylized 3D render, expressive character design, subsurface scattering skin, vibrant saturated colors, global illumination.',
+    image: 'https://picsum.photos/400/600?random=20',
+    isPro: false
   }
 ];
 
