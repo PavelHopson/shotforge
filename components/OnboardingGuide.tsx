@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Key, Camera, Layers, Sparkles, ExternalLink, ScanFace, Palette, ChevronRight, Star, Zap, Crown } from 'lucide-react';
+import { X, Key, Camera, Layers, Sparkles, ExternalLink, ScanFace, Palette, ChevronRight, Star, Zap, Crown, Server, Check } from 'lucide-react';
 import { PRESETS } from '../constants';
+import { AIProvider } from '../types';
 
 interface OnboardingGuideProps {
   isOpen: boolean;
@@ -39,9 +40,17 @@ const PRESET_TIPS: Record<string, string> = {
   'indie-film-memory': 'Golden Hour + Dreamy. Casual одежда, vintage стиль.',
 };
 
+const PROVIDERS: { id: AIProvider; name: string; color: string; free: boolean; desc: string }[] = [
+  { id: 'gemini', name: 'Google Gemini', color: '#8b5cf6', free: true, desc: 'Анализ лица + генерация изображений' },
+  { id: 'openai', name: 'OpenAI', color: '#10b981', free: false, desc: 'DALL-E 3 + GPT-4o' },
+  { id: 'openrouter', name: 'OpenRouter', color: '#f59e0b', free: false, desc: 'Мульти-провайдер, pay-per-token' },
+  { id: 'ollama', name: 'Ollama', color: '#6366f1', free: true, desc: 'Локально, бесплатно, без API ключа' },
+];
+
 export const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState<Tab>('api-key');
   const [expandedPreset, setExpandedPreset] = useState<string | null>(null);
+  const [activeProvider, setActiveProvider] = useState<AIProvider>('gemini');
 
   if (!isOpen) return null;
 
@@ -96,43 +105,171 @@ export const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ isOpen, onClos
           {/* ===== API KEY TAB ===== */}
           {activeTab === 'api-key' && (
             <div className="space-y-4 animate-fade-in">
-              <div className="bg-sf-900/30 border border-sf-700/30 rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-sf-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                    <Key className="w-4 h-4 text-sf-400" />
+              {/* Provider selector */}
+              <div className="grid grid-cols-4 gap-2">
+                {PROVIDERS.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => setActiveProvider(p.id)}
+                    className={`relative p-2.5 rounded-xl border-2 text-center transition-all duration-200 ${
+                      activeProvider === p.id
+                        ? 'border-sf-500 bg-sf-500/10 text-sf-50'
+                        : 'border-glass-border bg-glass text-dim hover:border-sf-800/50 hover:text-sf-200'
+                    }`}
+                    style={activeProvider === p.id ? { boxShadow: `0 2px 12px ${p.color}25` } : {}}
+                  >
+                    <div className="text-xs font-semibold leading-tight">{p.name}</div>
+                    {p.free && (
+                      <span className="absolute -top-1.5 -right-1.5 text-[8px] font-bold bg-emerald-500 text-white px-1.5 py-0.5 rounded-full">FREE</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {/* --- GEMINI --- */}
+              {activeProvider === 'gemini' && (
+                <div className="space-y-3">
+                  <ProviderHeader
+                    name="Google Gemini"
+                    desc="Лучший выбор для Shotforge. Бесплатный API ключ, анализ лица и генерация изображений."
+                    features={['Анализ лица (Gemini 2.5 Flash)', 'Генерация фото (Gemini 3 Pro)', 'Face Fusion композит', 'Бесплатно до ~50 img/день']}
+                  />
+                  <StepCard
+                    number={1}
+                    title="Откройте Google AI Studio"
+                    description="Перейдите на страницу получения ключа. Войдите с Google аккаунтом."
+                    link={{ url: 'https://aistudio.google.com/apikey', label: 'aistudio.google.com/apikey' }}
+                  />
+                  <StepCard
+                    number={2}
+                    title="Создайте API ключ"
+                    description='Нажмите "Create API Key" → выберите проект (или создайте новый) → скопируйте ключ.'
+                  />
+                  <StepCard
+                    number={3}
+                    title="Вставьте ключ в Shotforge"
+                    description='Нажмите ⚙️ Settings → выберите Gemini → вставьте ключ → Save.'
+                  />
+                  <InfoBox text="Бесплатный лимит: ~1500 запросов/день (Flash), ~50 изображений/день (Image Preview). Ключ хранится локально в браузере." />
+                </div>
+              )}
+
+              {/* --- OPENAI --- */}
+              {activeProvider === 'openai' && (
+                <div className="space-y-3">
+                  <ProviderHeader
+                    name="OpenAI"
+                    desc="DALL-E 3 для генерации изображений и GPT-4o для анализа. Платный, но мощный."
+                    features={['DALL-E 3 генерация', 'GPT-4o анализ лица', 'gpt-image-1 (новейший)', 'Оплата по использованию']}
+                  />
+                  <StepCard
+                    number={1}
+                    title="Зарегистрируйтесь на OpenAI"
+                    description="Создайте аккаунт на платформе OpenAI."
+                    link={{ url: 'https://platform.openai.com/signup', label: 'platform.openai.com/signup' }}
+                  />
+                  <StepCard
+                    number={2}
+                    title="Пополните баланс"
+                    description='Перейдите в Billing → Add payment method → пополните от $5. Генерация одного изображения ≈ $0.04.'
+                    link={{ url: 'https://platform.openai.com/settings/organization/billing', label: 'Billing Settings' }}
+                  />
+                  <StepCard
+                    number={3}
+                    title="Создайте API ключ"
+                    description='API Keys → Create new secret key → скопируйте (показывается один раз!).'
+                    link={{ url: 'https://platform.openai.com/api-keys', label: 'platform.openai.com/api-keys' }}
+                  />
+                  <StepCard
+                    number={4}
+                    title="Вставьте ключ в Shotforge"
+                    description='⚙️ Settings → выберите OpenAI → вставьте ключ → выберите модель (gpt-image-1 или dall-e-3) → Save.'
+                  />
+                  <InfoBox text="Стоимость: DALL-E 3 ~$0.04/изображение (1024x1024), GPT-4o ~$0.01/запрос. $5 хватит на ~100+ генераций." />
+                </div>
+              )}
+
+              {/* --- OPENROUTER --- */}
+              {activeProvider === 'openrouter' && (
+                <div className="space-y-3">
+                  <ProviderHeader
+                    name="OpenRouter"
+                    desc="Единый API для доступа к 100+ моделям от разных провайдеров. Гибкие тарифы."
+                    features={['Gemini, GPT-4o, Claude, Llama', 'Единый ключ для всех моделей', 'Pay-per-token тарификация', 'Бесплатные модели доступны']}
+                  />
+                  <StepCard
+                    number={1}
+                    title="Зарегистрируйтесь на OpenRouter"
+                    description="Создайте аккаунт через Google или email."
+                    link={{ url: 'https://openrouter.ai', label: 'openrouter.ai' }}
+                  />
+                  <StepCard
+                    number={2}
+                    title="Пополните кредиты (опционально)"
+                    description='Credits → Add credits. Есть бесплатные модели, но для качественной генерации нужен баланс от $1.'
+                    link={{ url: 'https://openrouter.ai/credits', label: 'openrouter.ai/credits' }}
+                  />
+                  <StepCard
+                    number={3}
+                    title="Создайте API ключ"
+                    description='Keys → Create Key → дайте имя "Shotforge" → скопируйте ключ.'
+                    link={{ url: 'https://openrouter.ai/keys', label: 'openrouter.ai/keys' }}
+                  />
+                  <StepCard
+                    number={4}
+                    title="Вставьте ключ в Shotforge"
+                    description='⚙️ Settings → OpenRouter → вставьте ключ → выберите модель → Save.'
+                  />
+                  <InfoBox text="Совет: google/gemini-2.5-flash — дешёвый и быстрый. Для анализа попробуйте anthropic/claude-sonnet-4. Генерация изображений через OpenRouter ограничена текстовыми моделями." />
+                </div>
+              )}
+
+              {/* --- OLLAMA --- */}
+              {activeProvider === 'ollama' && (
+                <div className="space-y-3">
+                  <ProviderHeader
+                    name="Ollama (локально)"
+                    desc="Запускайте AI модели на своём компьютере. Бесплатно, приватно, без API ключа."
+                    features={['Полностью бесплатно', '100% приватность данных', 'Работает без интернета', 'Только текст (нет генерации фото)']}
+                  />
+                  <StepCard
+                    number={1}
+                    title="Установите Ollama"
+                    description="Скачайте и установите Ollama для вашей ОС (Windows, macOS, Linux)."
+                    link={{ url: 'https://ollama.com/download', label: 'ollama.com/download' }}
+                  />
+                  <StepCard
+                    number={2}
+                    title="Скачайте модель"
+                    description='Откройте терминал и выполните команду для загрузки модели (≈20 ГБ для полной версии).'
+                  />
+                  <div className="bg-bg-2 border border-glass-border rounded-xl p-3">
+                    <p className="text-[10px] text-sf-400 font-semibold uppercase tracking-wider mb-2">Команда для терминала</p>
+                    <code className="text-xs text-sf-200 font-mono block bg-bg border border-glass-border rounded-lg p-2.5 select-all">
+                      ollama run llama3.2-vision
+                    </code>
+                    <p className="text-[10px] text-dim mt-2">Альтернативы: llava, huihui-ai/Huihui-Qwen3.5-35B-A3B-abliterated</p>
                   </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-sf-100 mb-1">Gemini API — бесплатно</h3>
-                    <p className="text-xs text-dim leading-relaxed">
-                      Shotforge использует Google Gemini для анализа лица и генерации изображений. API ключ бесплатный с щедрым лимитом.
-                    </p>
+                  <StepCard
+                    number={3}
+                    title="Настройте в Shotforge"
+                    description='⚙️ Settings → Ollama → убедитесь что Base URL = http://localhost:11434 → Save. API ключ не нужен.'
+                  />
+                  <div className="bg-sf-900/20 border border-sf-800/30 rounded-xl p-3">
+                    <div className="flex items-start gap-2">
+                      <Server className="w-3.5 h-3.5 text-sf-400 shrink-0 mt-0.5" />
+                      <p className="text-xs text-sf-300 leading-relaxed">
+                        <span className="font-semibold">Важно:</span> Ollama только улучшает промпты. Генерация изображений недоступна локально — для фото используйте Gemini или OpenAI.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              {/* Steps */}
-              <div className="space-y-3">
-                <StepCard
-                  number={1}
-                  title="Откройте Google AI Studio"
-                  description="Перейдите на страницу получения ключа. Войдите с Google аккаунтом."
-                  link={{ url: 'https://aistudio.google.com/apikey', label: 'aistudio.google.com/apikey' }}
-                />
-                <StepCard
-                  number={2}
-                  title="Создайте API ключ"
-                  description='Нажмите "Create API Key" → выберите проект (или создайте новый) → скопируйте ключ.'
-                />
-                <StepCard
-                  number={3}
-                  title="Вставьте ключ в Shotforge"
-                  description='Нажмите ⚙️ Settings в правом верхнем углу → выберите Gemini → вставьте ключ → Save.'
-                />
-              </div>
-
-              <div className="bg-glass border border-glass-border rounded-xl p-4">
-                <p className="text-xs text-dim leading-relaxed">
-                  <span className="text-sf-300 font-semibold">Бесплатный лимит:</span> ~1500 запросов/день для Gemini 2.5 Flash, ~50 запросов/день для генерации изображений (gemini-3-pro-image-preview). Ключ хранится только в вашем браузере.
+              {/* Common footer */}
+              <div className="bg-glass border border-glass-border rounded-xl p-3 mt-2">
+                <p className="text-[11px] text-dim leading-relaxed text-center">
+                  Все ключи хранятся <span className="text-sf-300 font-medium">только в вашем браузере</span> (localStorage). Shotforge не отправляет ключи на сервер.
                 </p>
               </div>
             </div>
@@ -237,6 +374,29 @@ export const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ isOpen, onClos
 };
 
 /* ---------- Sub-components ---------- */
+
+const ProviderHeader: React.FC<{ name: string; desc: string; features: string[] }> = ({ name, desc, features }) => (
+  <div className="bg-sf-900/30 border border-sf-700/30 rounded-xl p-4">
+    <h3 className="text-sm font-semibold text-sf-100 mb-1">{name}</h3>
+    <p className="text-xs text-dim leading-relaxed mb-3">{desc}</p>
+    <div className="grid grid-cols-2 gap-1.5">
+      {features.map((f, i) => (
+        <div key={i} className="flex items-center gap-1.5 text-[11px] text-sf-300">
+          <Check className="w-3 h-3 text-sf-400 shrink-0" />
+          {f}
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const InfoBox: React.FC<{ text: string }> = ({ text }) => (
+  <div className="bg-glass border border-glass-border rounded-xl p-3">
+    <p className="text-xs text-dim leading-relaxed">
+      <span className="text-sf-300 font-semibold">Info: </span>{text}
+    </p>
+  </div>
+);
 
 const StepCard: React.FC<{
   number: number;
