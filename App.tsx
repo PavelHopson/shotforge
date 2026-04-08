@@ -5,6 +5,7 @@ import { UploadSection } from './components/UploadSection';
 import { ConfigPanel } from './components/ConfigPanel';
 import { ResultsGallery } from './components/ResultsGallery';
 import { SettingsPanel } from './components/SettingsPanel';
+import { OnboardingGuide } from './components/OnboardingGuide';
 import { FaceFusionMode } from './components/FaceFusionMode';
 import { AppStep, UserConfig, GeneratedPhoto, FaceAnalysis, AppState, AppMode } from './types';
 import { INITIAL_CONFIG } from './constants';
@@ -14,6 +15,7 @@ const App: React.FC = () => {
   // --- Mode & Settings ---
   const [mode, setMode] = useState<AppMode>('photographer');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
 
   // --- AI Photographer state (original) ---
   const [step, setStep] = useState<AppStep>('HERO');
@@ -145,20 +147,20 @@ const App: React.FC = () => {
 
           {styleDescription && (
             <div className="max-w-4xl mx-auto px-4 mb-4">
-              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
-                <p className="text-xs text-indigo-400 font-mono uppercase tracking-wider mb-2">Detected Style</p>
-                <p className="text-sm text-zinc-300 leading-relaxed">{styleDescription}</p>
+              <div className="bg-glass border border-glass-border rounded-xl p-4">
+                <p className="text-xs text-sf-400 font-mono uppercase tracking-wider mb-2">Detected Style</p>
+                <p className="text-sm text-sf-200 leading-relaxed">{styleDescription}</p>
               </div>
             </div>
           )}
 
           {appState === 'generating' && (
             <div className="max-w-4xl mx-auto px-4 mb-4">
-              <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-xl p-4 flex items-center gap-3">
-                <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+              <div className="bg-sf-500/10 border border-sf-500/30 rounded-xl p-4 flex items-center gap-3">
+                <div className="w-5 h-5 border-2 border-sf-400 border-t-transparent rounded-full animate-spin" />
                 <div>
-                  <p className="text-indigo-300 text-sm font-medium">Creating Masterpiece</p>
-                  <p className="text-indigo-400/70 text-xs">Generating images with Gemini AI...</p>
+                  <p className="text-sf-200 text-sm font-medium">Creating Masterpiece</p>
+                  <p className="text-sf-400/70 text-xs">Generating images with Gemini AI...</p>
                 </div>
               </div>
             </div>
@@ -181,25 +183,30 @@ const App: React.FC = () => {
 
   const renderStyleTransferMode = () => (
     <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-12">
-        <div className="w-16 h-16 mx-auto mb-6 bg-indigo-500/10 rounded-full flex items-center justify-center">
+      <div className="bg-glass border border-glass-border rounded-2xl p-12 relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full -z-10 pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(124,58,237,0.08) 0%, transparent 70%)' }} />
+        <div className="w-16 h-16 mx-auto mb-6 bg-sf-900/40 border border-sf-800/40 rounded-2xl flex items-center justify-center">
           <span className="text-3xl">🎨</span>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-3">Style Transfer</h2>
-        <p className="text-zinc-400 max-w-md mx-auto mb-6">
+        <h2 className="text-2xl font-bold text-sf-50 mb-3">Style Transfer</h2>
+        <p className="text-dim max-w-md mx-auto mb-6">
           Upload a reference style image and a target photo. The AI will apply the artistic style of the reference to your target image.
         </p>
-        <p className="text-xs text-zinc-600 uppercase tracking-wider font-semibold">Coming Soon</p>
+        <span className="inline-flex items-center gap-1.5 bg-sf-900/30 border border-sf-700/30 px-3 py-1.5 rounded-full text-xs font-semibold text-sf-300 uppercase tracking-wider">
+          <span className="w-1.5 h-1.5 rounded-full bg-sf-400 animate-pulse"></span>
+          Coming Soon
+        </span>
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-background text-foreground antialiased selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-background text-foreground antialiased selection:bg-sf-500/30">
       <Header
         mode={mode}
         onModeChange={handleModeChange}
         onSettingsOpen={() => setSettingsOpen(true)}
+        onGuideOpen={() => setGuideOpen(true)}
       />
 
       <main className="pt-16 pb-20">
@@ -209,9 +216,9 @@ const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-900 bg-zinc-950 py-12">
+      <footer className="border-t border-glass-border py-12" style={{ background: 'rgba(5,5,7,0.9)' }}>
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-zinc-600 text-sm">
+          <p className="text-dim text-sm">
             &copy; 2025 Shotforge AI Inc. Built by Pavel Hopson.
             <br />
             Powered by Gemini 3 Pro, OpenAI & OpenRouter.
@@ -219,8 +226,9 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* Settings Modal */}
+      {/* Modals */}
       <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <OnboardingGuide isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
     </div>
   );
 };

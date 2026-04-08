@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { UploadCloud, CheckCircle2, Image as ImageIcon } from 'lucide-react';
+import { UploadCloud, CheckCircle2, Shield, Scan } from 'lucide-react';
 import { Button } from './Button';
 import { FaceAnalysis, AppState } from '../types';
 
@@ -54,7 +54,6 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
 
   const handleContinue = () => {
     if (preview) {
-      // Pass the base64 data (strip prefix for API calls)
       const base64Data = preview.split(',')[1];
       onNext(base64Data);
     }
@@ -65,8 +64,8 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
       <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-white mb-4">Upload a Reference Selfie</h2>
-        <p className="text-zinc-400">
+        <h2 className="text-3xl font-bold text-sf-50 mb-4">Upload a Reference Selfie</h2>
+        <p className="text-dim">
           We need one clear photo of your face. No sunglasses, no hats.
           <br />Your data is processed ephemerally and deleted in 24h.
         </p>
@@ -90,21 +89,23 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
             flex flex-col items-center justify-center w-full h-80
             border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-300 overflow-hidden
             ${isDragging
-              ? 'border-indigo-400 bg-indigo-500/20 scale-[1.02]'
+              ? 'border-sf-400 scale-[1.02]'
               : preview
-                ? 'border-indigo-500 bg-indigo-500/10'
-                : 'border-zinc-700 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-500'
+                ? 'border-sf-500 border-solid'
+                : 'border-glass-border bg-glass hover:border-sf-700/50'
             }
           `}
+          style={isDragging
+            ? { background: 'rgba(124,58,237,0.1)', boxShadow: '0 0 40px rgba(124,58,237,0.15)' }
+            : preview
+              ? { background: 'rgba(124,58,237,0.05)' }
+              : {}
+          }
         >
           {preview ? (
             <div className="w-full h-full relative">
-              <img
-                src={preview}
-                alt="Preview"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+              <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
                 <p className="text-white font-medium flex items-center gap-2">
                   <UploadCloud className="w-5 h-5" />
                   Change Photo
@@ -112,12 +113,12 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center text-zinc-400 group-hover:text-zinc-300">
-              <div className={`w-20 h-20 rounded-full bg-zinc-800 flex items-center justify-center mb-6 transition-transform ${isDragging ? 'scale-125' : 'group-hover:scale-110'}`}>
-                <UploadCloud className="w-10 h-10" />
+            <div className="flex flex-col items-center text-dim group-hover:text-sf-300 transition-colors">
+              <div className={`w-20 h-20 rounded-2xl bg-sf-900/40 border border-sf-800/40 flex items-center justify-center mb-6 transition-transform ${isDragging ? 'scale-125' : 'group-hover:scale-110'}`}>
+                <UploadCloud className="w-10 h-10 text-sf-400" />
               </div>
-              <p className="text-lg font-medium text-white mb-2">Click to upload or drag & drop</p>
-              <p className="text-sm">SVG, PNG, JPG or GIF (max. 10MB)</p>
+              <p className="text-lg font-medium text-sf-100 mb-2">Click to upload or drag & drop</p>
+              <p className="text-sm text-dim">SVG, PNG, JPG or GIF (max. 10MB)</p>
             </div>
           )}
         </div>
@@ -125,26 +126,29 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
 
       {/* Face Analysis Results */}
       {faceAnalysis && faceAnalysis.faceShape !== 'Unknown' && (
-        <div className="mt-6 p-4 bg-zinc-900/80 border border-zinc-800 rounded-xl animate-in fade-in duration-500">
-          <p className="text-xs text-indigo-400 font-mono uppercase tracking-wider mb-3">AI Face Analysis</p>
+        <div className="mt-6 bg-glass border border-glass-border rounded-xl p-4 animate-slide-up">
+          <div className="flex items-center gap-2 mb-3">
+            <Scan className="w-3.5 h-3.5 text-sf-400" />
+            <p className="text-xs text-sf-400 font-mono uppercase tracking-wider">AI Face Analysis</p>
+          </div>
           <div className="grid grid-cols-2 gap-3 text-sm">
             {faceAnalysis.faceShape && (
-              <div><span className="text-zinc-500">Face Shape:</span> <span className="text-white">{faceAnalysis.faceShape}</span></div>
+              <div><span className="text-dim">Face Shape:</span> <span className="text-sf-100">{faceAnalysis.faceShape}</span></div>
             )}
             {faceAnalysis.skinTone && (
-              <div><span className="text-zinc-500">Skin Tone:</span> <span className="text-white">{faceAnalysis.skinTone}</span></div>
+              <div><span className="text-dim">Skin Tone:</span> <span className="text-sf-100">{faceAnalysis.skinTone}</span></div>
             )}
             {faceAnalysis.hairColor && (
-              <div><span className="text-zinc-500">Hair:</span> <span className="text-white">{faceAnalysis.hairColor}</span></div>
+              <div><span className="text-dim">Hair:</span> <span className="text-sf-100">{faceAnalysis.hairColor}</span></div>
             )}
             {faceAnalysis.bodyType && (
-              <div><span className="text-zinc-500">Build:</span> <span className="text-white">{faceAnalysis.bodyType}</span></div>
+              <div><span className="text-dim">Build:</span> <span className="text-sf-100">{faceAnalysis.bodyType}</span></div>
             )}
           </div>
           {faceAnalysis.styleKeywords && faceAnalysis.styleKeywords.length > 0 && (
             <div className="mt-3 flex gap-2 flex-wrap">
               {faceAnalysis.styleKeywords.map((kw, i) => (
-                <span key={i} className="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-1 rounded-full">{kw}</span>
+                <span key={i} className="text-xs bg-sf-500/15 text-sf-300 px-2.5 py-1 rounded-full border border-sf-700/30">{kw}</span>
               ))}
             </div>
           )}
@@ -153,8 +157,8 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
 
       {/* Analyzing indicator */}
       {isAnalyzing && (
-        <div className="mt-6 flex items-center justify-center gap-3 text-indigo-400 animate-pulse">
-          <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+        <div className="mt-6 flex items-center justify-center gap-3 text-sf-400 animate-pulse">
+          <div className="w-4 h-4 border-2 border-sf-400 border-t-transparent rounded-full animate-spin" />
           <span className="text-sm font-medium">Analyzing facial features...</span>
         </div>
       )}
@@ -166,9 +170,9 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
       </div>
 
       {/* Trust badges */}
-      <div className="mt-8 flex justify-center gap-6 text-zinc-500 text-xs">
-        <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> AI Face Analysis</span>
-        <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Encrypted Upload</span>
+      <div className="mt-8 flex justify-center gap-6 text-dim text-xs">
+        <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-sf-400" /> AI Face Analysis</span>
+        <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-sf-400" /> Encrypted Upload</span>
       </div>
     </div>
   );
