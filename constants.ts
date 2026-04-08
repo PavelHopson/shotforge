@@ -140,6 +140,13 @@ export const PRESETS: Preset[] = [
     description: 'Stylized 3D render, expressive character design, subsurface scattering skin, vibrant saturated colors, global illumination.',
     image: 'https://picsum.photos/400/600?random=20',
     isPro: false
+  },
+  {
+    id: 'indie-film-memory',
+    name: 'Indie Film Memory',
+    description: 'Nostalgic indie film aesthetic, washed-out tones, organic grain, selective focus, anti-gloss raw look, memory archive feel.',
+    image: 'https://picsum.photos/400/600?random=21',
+    isPro: true
   }
 ];
 
