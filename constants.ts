@@ -98,6 +98,20 @@ export const PRESETS: Preset[] = [
     description: 'Soft watercolor, paper texture, bleeding edges, pastel palette.',
     image: 'https://picsum.photos/400/600?random=14',
     isPro: false
+  },
+  {
+    id: 'hyper-real-selfie',
+    name: 'Hyper-Real Selfie',
+    description: 'Ultra-realistic mirror selfie, visible pores, natural skin texture, phone-camera grain, no retouching.',
+    image: 'https://picsum.photos/400/600?random=15',
+    isPro: true
+  },
+  {
+    id: 'macro-skin',
+    name: 'Macro Skin Realism',
+    description: 'Extreme close-up macro photography, visible pores, fine lines, natural sheen, unretouched editorial beauty.',
+    image: 'https://picsum.photos/400/600?random=16',
+    isPro: true
   }
 ];
 
