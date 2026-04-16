@@ -8,3 +8,53 @@ body {
 ::-webkit-scrollbar-track { background: #05070A; }
 ::-webkit-scrollbar-thumb { background: #1C2536; border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: #6BA3FF; }
+
+/* ── Cyber grid ── */
+body {
+  background-image:
+    linear-gradient(to right, rgba(107, 163, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(107, 163, 255, 0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Card corner brackets ── */
+.eclipse-card {
+  position: relative;
+}
+.eclipse-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 10px; height: 10px;
+  border-top: 2px solid rgba(107, 163, 255, 0.3);
+  border-left: 2px solid rgba(107, 163, 255, 0.3);
+  z-index: 1;
+  transition: all 0.3s;
+}
+.eclipse-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 10px; height: 10px;
+  border-bottom: 2px solid rgba(245, 166, 35, 0.2);
+  border-right: 2px solid rgba(245, 166, 35, 0.2);
+  z-index: 1;
+  transition: all 0.3s;
+}
+.eclipse-card:hover::before {
+  width: 18px; height: 18px;
+  border-color: rgba(107, 163, 255, 0.5);
+  filter: drop-shadow(0 0 4px rgba(107, 163, 255, 0.3));
+}
+.eclipse-card:hover::after {
+  width: 18px; height: 18px;
+  border-color: rgba(245, 166, 35, 0.4);
+  filter: drop-shadow(0 0 4px rgba(245, 166, 35, 0.3));
+}
+
+/* ── Text glow ── */
+.text-glow { text-shadow: 0 0 20px rgba(107, 163, 255, 0.4); }
+.text-glow-warm { text-shadow: 0 0 20px rgba(245, 166, 35, 0.4); }
+
+/* ── Spinner glow ── */
+.spinner-glow { filter: drop-shadow(0 0 8px rgba(107, 163, 255, 0.5)); }

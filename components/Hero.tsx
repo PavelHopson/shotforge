@@ -22,7 +22,7 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
         </div>
 
         {/* Heading */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-sf-50 mb-6 max-w-4xl mx-auto leading-[1.08] animate-slide-up">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-sf-50 mb-6 max-w-4xl mx-auto leading-[1.08] animate-slide-up text-glow">
           Профессиональная{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-sf-400 via-sf-300 to-sf-400" style={{ backgroundSize: '200% auto', animation: 'shimmer 4s ease infinite' }}>
             фотосессия
@@ -63,7 +63,7 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
           ].map((f, i) => (
             <div
               key={f.title}
-              className="flex flex-col items-center gap-2 p-5 rounded-2xl bg-glass border border-glass-border hover:border-sf-800/50 transition-all animate-slide-up"
+              className="eclipse-card flex flex-col items-center gap-2 p-5 rounded-2xl bg-glass border border-glass-border hover:border-sf-800/50 transition-all animate-slide-up"
               style={{ animationDelay: `${0.3 + i * 0.1}s` }}
             >
               <div className="w-10 h-10 rounded-xl bg-sf-900/40 border border-sf-800/40 flex items-center justify-center text-sf-400 mb-1">
