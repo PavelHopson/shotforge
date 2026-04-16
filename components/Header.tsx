@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Settings, ScanFace, Aperture, Palette, HelpCircle, Clock } from 'lucide-react';
+import { IconCamera, IconFaceFusion, IconStyleTransfer, IconSettings, IconGuide, IconHistory, IconSparkles } from './icons/EclipseIcons';
 import { AppMode } from '../types';
 import { Logo } from './Logo';
 
@@ -12,9 +12,9 @@ interface HeaderProps {
 }
 
 const MODE_TABS: { mode: AppMode; label: string; icon: React.ReactNode }[] = [
-  { mode: 'photographer', label: 'AI Фотограф', icon: <Aperture className="w-3.5 h-3.5" /> },
-  { mode: 'face-fusion', label: 'Face Fusion', icon: <ScanFace className="w-3.5 h-3.5" /> },
-  { mode: 'style-transfer', label: 'Стиль', icon: <Palette className="w-3.5 h-3.5" /> },
+  { mode: 'photographer', label: 'AI Фотограф', icon: <IconCamera className="w-3.5 h-3.5" size={14} /> },
+  { mode: 'face-fusion', label: 'Face Fusion', icon: <IconFaceFusion className="w-3.5 h-3.5" size={14} /> },
+  { mode: 'style-transfer', label: 'Стиль', icon: <IconStyleTransfer className="w-3.5 h-3.5" size={14} /> },
 ];
 
 export const Header: React.FC<HeaderProps> = ({ mode, onModeChange, onSettingsOpen, onGuideOpen, onHistoryOpen }) => {
@@ -51,16 +51,16 @@ export const Header: React.FC<HeaderProps> = ({ mode, onModeChange, onSettingsOp
         {/* Right */}
         <div className="flex items-center gap-1.5">
           <button onClick={onGuideOpen} className="p-2 rounded-lg text-dim hover:text-sf-300 hover:bg-glass-hover transition-colors" title="Быстрый старт">
-            <HelpCircle className="w-4.5 h-4.5" />
+            <IconGuide className="w-4.5 h-4.5" size={18} />
           </button>
           <button onClick={onHistoryOpen} className="p-2 rounded-lg text-dim hover:text-sf-300 hover:bg-glass-hover transition-colors" title="История генераций">
-            <Clock className="w-4.5 h-4.5" />
+            <IconHistory className="w-4.5 h-4.5" size={18} />
           </button>
           <button onClick={onSettingsOpen} className="p-2 rounded-lg text-dim hover:text-sf-300 hover:bg-glass-hover transition-colors" title="Настройки AI">
-            <Settings className="w-4.5 h-4.5" />
+            <IconSettings className="w-4.5 h-4.5" size={18} />
           </button>
           <div className="flex items-center gap-1.5 bg-sf-900/40 border border-sf-800/50 px-2.5 py-1 rounded-full ml-1">
-            <Sparkles className="w-3 h-3 text-sf-400" />
+            <IconSparkles className="w-3 h-3 text-sf-400" size={12} />
             <span className="text-xs font-medium text-sf-300">Multi-AI</span>
           </div>
         </div>

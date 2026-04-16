@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowRight, Aperture, Clock, Zap, Star } from 'lucide-react';
+import { ArrowRight, Zap, Star } from 'lucide-react';
+import { IconCamera, IconHistory, IconSparkles } from './icons/EclipseIcons';
 import { Button } from './Button';
 
 interface HeroProps {
@@ -56,9 +57,9 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
         {/* Features */}
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
           {[
-            { icon: <Aperture className="w-5 h-5" />, title: 'Гиперреализм', desc: '21 стиль от Vogue до LEGO' },
-            { icon: <Clock className="w-5 h-5" />, title: '180 секунд', desc: 'GPU-обработка в реальном времени' },
-            { icon: <Zap className="w-5 h-5" />, title: 'AI Режиссёр', desc: 'Gemini подбирает свет и ракурс' },
+            { icon: <IconCamera className="w-5 h-5" size={20} />, title: 'Гиперреализм', desc: '21 стиль от Vogue до LEGO' },
+            { icon: <IconHistory className="w-5 h-5" size={20} />, title: '180 секунд', desc: 'GPU-обработка в реальном времени' },
+            { icon: <IconSparkles className="w-5 h-5" size={20} />, title: 'AI Режиссёр', desc: 'Gemini подбирает свет и ракурс' },
           ].map((f, i) => (
             <div
               key={f.title}

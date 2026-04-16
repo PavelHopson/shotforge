@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { UploadCloud, CheckCircle2, Shield, Scan } from 'lucide-react';
+import { CheckCircle2, Shield, Scan } from 'lucide-react';
+import { IconUpload } from './icons/EclipseIcons';
 import { Button } from './Button';
 import { FaceAnalysis, AppState } from '../types';
 
@@ -107,7 +108,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
               <img src={preview} alt="Preview" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
                 <p className="text-white font-medium flex items-center gap-2">
-                  <UploadCloud className="w-5 h-5" />
+                  <IconUpload className="w-5 h-5" size={20} />
                   Change Photo
                 </p>
               </div>
@@ -115,7 +116,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
           ) : (
             <div className="flex flex-col items-center text-dim group-hover:text-sf-300 transition-colors">
               <div className={`w-20 h-20 rounded-2xl bg-sf-900/40 border border-sf-800/40 flex items-center justify-center mb-6 transition-transform ${isDragging ? 'scale-125' : 'group-hover:scale-110'}`}>
-                <UploadCloud className="w-10 h-10 text-sf-400" />
+                <IconUpload className="w-10 h-10 text-sf-400" size={40} />
               </div>
               <p className="text-lg font-medium text-sf-100 mb-2">Click to upload or drag & drop</p>
               <p className="text-sm text-dim">SVG, PNG, JPG or GIF (max. 10MB)</p>
