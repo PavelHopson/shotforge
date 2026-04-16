@@ -20,7 +20,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 32, className = '' }) => (
         <stop offset="100%" stopColor="#4A7FD4" />
       </linearGradient>
       <linearGradient id="sf-logo-inner" x1="8" y1="8" x2="24" y2="24">
-        <stop offset="0%" stopColor="#c4b5fd" />
+        <stop offset="0%" stopColor="#9DC4FF" />
         <stop offset="100%" stopColor="#9DC4FF" />
       </linearGradient>
     </defs>

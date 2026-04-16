@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onModeChange, onSettingsOp
         {/* Logo */}
         <div className="flex items-center gap-2.5">
           <Logo size={32} />
-          <span className="font-bold text-base tracking-tight text-sf-50">
+          <span className="font-bold text-base tracking-tight text-sf-50" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
             Shot<span className="text-sf-400">forge</span>
           </span>
         </div>
