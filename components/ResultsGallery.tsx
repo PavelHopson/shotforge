@@ -134,7 +134,7 @@ export const ResultsGallery: React.FC<ResultsGalleryProps> = ({ photos, onReset,
                     onClick={() => handleDownload(photo, index)}
                     className="p-2 rounded-xl text-white transition-all duration-200 hover:scale-110"
                     style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)' }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.5)'; }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(107,163,255,0.5)'; }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
                     title="Download"
                   >
@@ -144,7 +144,7 @@ export const ResultsGallery: React.FC<ResultsGalleryProps> = ({ photos, onReset,
                     onClick={() => handleShare(photo)}
                     className="p-2 rounded-xl text-white transition-all duration-200 hover:scale-110"
                     style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)' }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.5)'; }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(107,163,255,0.5)'; }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
                     title="Share"
                   >
@@ -154,7 +154,7 @@ export const ResultsGallery: React.FC<ResultsGalleryProps> = ({ photos, onReset,
                     <button
                       onClick={() => setCompareIndex(compareIndex === index ? null : index)}
                       className={`p-2 rounded-xl text-white transition-all duration-200 hover:scale-110 ${compareIndex === index ? 'ring-2 ring-sf-400' : ''}`}
-                      style={{ background: compareIndex === index ? 'rgba(124,58,237,0.5)' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)' }}
+                      style={{ background: compareIndex === index ? 'rgba(107,163,255,0.5)' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)' }}
                       title="Compare"
                     >
                       <ArrowLeftRight className="w-4 h-4" />

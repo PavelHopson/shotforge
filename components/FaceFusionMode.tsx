@@ -54,7 +54,7 @@ const AssetSlot: React.FC<AssetSlotProps> = ({ config, image, onUpload, onRemove
         }
         ${preview ? 'border-solid' : ''}
       `}
-      style={config.highlight && !preview ? { boxShadow: '0 0 20px rgba(124,58,237,0.08)' } : {}}
+      style={config.highlight && !preview ? { boxShadow: '0 0 20px rgba(107,163,255,0.08)' } : {}}
     >
       <input
         type="file"
@@ -296,7 +296,7 @@ export const FaceFusionMode: React.FC = () => {
                     onClick={handleDownload}
                     className="absolute top-2 right-2 p-2.5 rounded-xl text-white transition-all shadow-xl"
                     style={{ background: 'rgba(10,10,16,0.8)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.7)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(124,58,237,0.3)'; }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(107,163,255,0.7)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(107,163,255,0.3)'; }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'rgba(10,10,16,0.8)'; e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)'; }}
                     title="Download"
                   >

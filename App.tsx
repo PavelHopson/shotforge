@@ -342,7 +342,7 @@ const App: React.FC = () => {
   const renderStyleTransferMode = () => (
     <div className="max-w-4xl mx-auto px-4 py-20 text-center">
       <div className="bg-glass border border-glass-border rounded-2xl p-12 relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full -z-10 pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(124,58,237,0.08) 0%, transparent 70%)' }} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full -z-10 pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(107,163,255,0.08) 0%, transparent 70%)' }} />
         <div className="w-16 h-16 mx-auto mb-6 bg-sf-900/40 border border-sf-800/40 rounded-2xl flex items-center justify-center">
           <span className="text-3xl">🎨</span>
         </div>

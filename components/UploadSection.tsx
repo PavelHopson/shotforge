@@ -96,9 +96,9 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ onNext, faceAnalys
             }
           `}
           style={isDragging
-            ? { background: 'rgba(124,58,237,0.1)', boxShadow: '0 0 40px rgba(124,58,237,0.15)' }
+            ? { background: 'rgba(107,163,255,0.1)', boxShadow: '0 0 40px rgba(107,163,255,0.15)' }
             : preview
-              ? { background: 'rgba(124,58,237,0.05)' }
+              ? { background: 'rgba(107,163,255,0.05)' }
               : {}
           }
         >

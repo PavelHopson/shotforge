@@ -55,7 +55,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   batchMode ? 'bg-sf-500 text-white' : 'bg-glass border border-glass-border text-dim hover:text-sf-200'
                 }`}
-                style={batchMode ? { boxShadow: '0 2px 8px rgba(124,58,237,0.25)' } : {}}
+                style={batchMode ? { boxShadow: '0 2px 8px rgba(107,163,255,0.25)' } : {}}
               >
                 <Sparkles className="w-3 h-3" />
                 Batch
@@ -96,14 +96,14 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
                       : 'border-transparent hover:bg-glass-hover'
                     }
                   `}
-                  style={isSelected ? { boxShadow: '0 2px 16px rgba(124,58,237,0.15)' } : {}}
+                  style={isSelected ? { boxShadow: '0 2px 16px rgba(107,163,255,0.15)' } : {}}
                 >
                   {/* Batch checkbox */}
                   {batchMode && (
                     <div className={`absolute top-3 left-3 z-10 w-5 h-5 rounded-md flex items-center justify-center transition-all ${
                       isSelected ? 'bg-sf-500 border-sf-500' : 'bg-bg-2/80 border-glass-border'
                     } border`}
-                      style={isSelected ? { boxShadow: '0 2px 8px rgba(124,58,237,0.4)' } : {}}
+                      style={isSelected ? { boxShadow: '0 2px 8px rgba(107,163,255,0.4)' } : {}}
                     >
                       {isSelected && <Check className="w-3 h-3 text-white" />}
                     </div>
@@ -112,7 +112,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
                   <div className="aspect-[3/4] rounded-lg overflow-hidden mb-2 relative">
                     <img src={preset.image} alt={preset.name} className="w-full h-full object-cover opacity-80" />
                     {preset.isPro && (
-                      <span className="absolute top-2 right-2 flex items-center gap-0.5 bg-sf-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ boxShadow: '0 2px 8px rgba(124,58,237,0.4)' }}>
+                      <span className="absolute top-2 right-2 flex items-center gap-0.5 bg-sf-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ boxShadow: '0 2px 8px rgba(107,163,255,0.4)' }}>
                         <Crown className="w-2.5 h-2.5" />
                         PRO
                       </span>
@@ -148,7 +148,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
                         ? 'bg-sf-500 border-sf-500 text-white'
                         : 'border-glass-border text-dim hover:border-sf-700/50 hover:text-sf-200'
                     }`}
-                    style={config.gender === g ? { boxShadow: '0 2px 12px rgba(124,58,237,0.25)' } : {}}
+                    style={config.gender === g ? { boxShadow: '0 2px 12px rgba(107,163,255,0.25)' } : {}}
                   >
                     {g}
                   </button>

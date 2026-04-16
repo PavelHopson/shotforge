@@ -40,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onModeChange, onSettingsOp
                   ? 'bg-sf-500 text-white shadow-lg'
                   : 'text-dim hover:text-sf-200 hover:bg-glass-hover'
               }`}
-              style={mode === tab.mode ? { boxShadow: '0 2px 12px rgba(124,58,237,0.3)' } : {}}
+              style={mode === tab.mode ? { boxShadow: '0 2px 12px rgba(107,163,255,0.3)' } : {}}
             >
               {tab.icon}
               {tab.label}

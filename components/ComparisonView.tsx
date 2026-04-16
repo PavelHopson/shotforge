@@ -64,7 +64,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
         {/* Handle */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full border-2 border-white/80 flex items-center justify-center cursor-grab active:cursor-grabbing"
-          style={{ background: 'rgba(124,58,237,0.8)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 16px rgba(124,58,237,0.4)' }}
+          style={{ background: 'rgba(107,163,255,0.8)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 16px rgba(107,163,255,0.4)' }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >
@@ -79,7 +79,7 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({
         </span>
       </div>
       <div className="absolute top-3 right-3 z-10">
-        <span className="text-[10px] font-bold text-white uppercase tracking-wider px-2 py-1 rounded-lg" style={{ background: 'rgba(124,58,237,0.6)', backdropFilter: 'blur(8px)' }}>
+        <span className="text-[10px] font-bold text-white uppercase tracking-wider px-2 py-1 rounded-lg" style={{ background: 'rgba(107,163,255,0.6)', backdropFilter: 'blur(8px)' }}>
           {afterLabel}
         </span>
       </div>

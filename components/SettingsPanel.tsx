@@ -88,7 +88,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
                       ? 'border-sf-500 bg-sf-500/10 text-sf-50'
                       : 'border-glass-border bg-bg-2 text-dim hover:border-sf-800/50 hover:text-sf-200'
                   }`}
-                  style={config.provider === provider ? { boxShadow: '0 2px 12px rgba(124,58,237,0.15)' } : {}}
+                  style={config.provider === provider ? { boxShadow: '0 2px 12px rgba(107,163,255,0.15)' } : {}}
                 >
                   <div className="text-sm font-semibold">{PROVIDER_LABELS[provider]}</div>
                 </button>
@@ -189,7 +189,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({ isOpen, onClose })
             className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-200"
             style={saved
               ? { background: 'linear-gradient(135deg, #059669, #10b981)', boxShadow: '0 2px 12px rgba(16,185,129,0.25)' }
-              : { background: 'linear-gradient(135deg, #7c3aed, #8b5cf6)', boxShadow: '0 2px 16px rgba(124,58,237,0.25)' }
+              : { background: 'linear-gradient(135deg, #4A7FD4, #6BA3FF)', boxShadow: '0 2px 16px rgba(107,163,255,0.25)' }
             }
           >
             {saved ? (

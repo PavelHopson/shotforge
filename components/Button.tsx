@@ -25,8 +25,8 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const primaryStyle = variant === 'primary' ? {
-    background: 'linear-gradient(135deg, #7c3aed, #8b5cf6)',
-    boxShadow: '0 2px 16px rgba(124,58,237,0.25)',
+    background: 'linear-gradient(135deg, #4A7FD4, #6BA3FF)',
+    boxShadow: '0 2px 16px rgba(107,163,255,0.25)',
   } : {};
 
   return (

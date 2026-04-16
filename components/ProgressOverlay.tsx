@@ -15,11 +15,11 @@ export const ProgressOverlay: React.FC<ProgressOverlayProps> = ({ progress, pres
         <div className="relative w-24 h-24 mx-auto mb-8">
           <div
             className="absolute inset-0 rounded-full animate-pulse"
-            style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.3) 0%, transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, rgba(107,163,255,0.3) 0%, transparent 70%)' }}
           />
           <div
             className="absolute inset-2 rounded-full animate-glow flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(139,92,246,0.1))', border: '1px solid rgba(124,58,237,0.3)' }}
+            style={{ background: 'linear-gradient(135deg, rgba(107,163,255,0.2), rgba(74,127,212,0.1))', border: '1px solid rgba(107,163,255,0.3)' }}
           >
             <Sparkles className="w-8 h-8 text-sf-400" />
           </div>
@@ -47,8 +47,8 @@ export const ProgressOverlay: React.FC<ProgressOverlayProps> = ({ progress, pres
               className="h-full rounded-full transition-all duration-500 ease-out"
               style={{
                 width: `${progress.percent}%`,
-                background: 'linear-gradient(90deg, #7c3aed, #8b5cf6, #a78bfa)',
-                boxShadow: '0 0 12px rgba(124,58,237,0.4)',
+                background: 'linear-gradient(90deg, #4A7FD4, #6BA3FF, #9DC4FF)',
+                boxShadow: '0 0 12px rgba(107,163,255,0.4)',
               }}
             />
           </div>
@@ -64,7 +64,7 @@ export const ProgressOverlay: React.FC<ProgressOverlayProps> = ({ progress, pres
                       ? 'bg-sf-400 animate-pulse'
                       : 'bg-bg-3 border border-glass-border'
                 }`}
-                  style={i < progress.currentStep ? { boxShadow: '0 0 8px rgba(124,58,237,0.4)' } : {}}
+                  style={i < progress.currentStep ? { boxShadow: '0 0 8px rgba(107,163,255,0.4)' } : {}}
                 />
                 <span className={`text-[10px] ${i <= progress.currentStep ? 'text-sf-300' : 'text-dim'}`}>
                   {i === 0 ? 'Промпты' : `Фото ${i}`}

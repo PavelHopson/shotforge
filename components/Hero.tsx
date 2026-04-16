@@ -10,8 +10,8 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
   return (
     <div className="relative pt-28 pb-16 sm:pt-36 sm:pb-20 overflow-hidden mesh-bg">
       {/* Glow orbs */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full -z-10 pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, transparent 70%)' }} />
-      <div className="absolute top-40 right-1/4 w-[300px] h-[300px] rounded-full -z-10 pointer-events-none animate-float" style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 60%)' }} />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full -z-10 pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(107,163,255,0.12) 0%, transparent 70%)' }} />
+      <div className="absolute top-40 right-1/4 w-[300px] h-[300px] rounded-full -z-10 pointer-events-none animate-float" style={{ background: 'radial-gradient(circle, rgba(74,127,212,0.08) 0%, transparent 60%)' }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         {/* Badge */}
@@ -40,9 +40,9 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
           <button
             onClick={onStart}
             className="group flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white text-sm transition-all duration-300 animate-glow"
-            style={{ background: 'linear-gradient(135deg, #7c3aed, #8b5cf6)', boxShadow: '0 4px 20px rgba(124,58,237,0.3)' }}
-            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(124,58,237,0.4)'; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(124,58,237,0.3)'; }}
+            style={{ background: 'linear-gradient(135deg, #4A7FD4, #6BA3FF)', boxShadow: '0 4px 20px rgba(107,163,255,0.3)' }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(107,163,255,0.4)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(107,163,255,0.3)'; }}
           >
             Начать сессию
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

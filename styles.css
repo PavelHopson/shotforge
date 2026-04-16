@@ -1,0 +1,10 @@
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #05070A;
+  color: #F2F5F9;
+}
+::selection { background: rgba(107, 163, 255, 0.25); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #05070A; }
+::-webkit-scrollbar-thumb { background: #1C2536; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #6BA3FF; }

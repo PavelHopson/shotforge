@@ -41,7 +41,7 @@ const PRESET_TIPS: Record<string, string> = {
 };
 
 const PROVIDERS: { id: AIProvider; name: string; color: string; free: boolean; desc: string }[] = [
-  { id: 'gemini', name: 'Google Gemini', color: '#8b5cf6', free: true, desc: 'Анализ лица + генерация изображений' },
+  { id: 'gemini', name: 'Google Gemini', color: '#6BA3FF', free: true, desc: 'Анализ лица + генерация изображений' },
   { id: 'openai', name: 'OpenAI', color: '#10b981', free: false, desc: 'DALL-E 3 + GPT-4o' },
   { id: 'openrouter', name: 'OpenRouter', color: '#f59e0b', free: false, desc: 'Мульти-провайдер, pay-per-token' },
   { id: 'ollama', name: 'Ollama', color: '#6366f1', free: true, desc: 'Локально, бесплатно, без API ключа' },
@@ -67,7 +67,7 @@ export const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ isOpen, onClos
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-glass-border shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br from-sf-500 to-sf-400" style={{ boxShadow: '0 2px 12px rgba(124,58,237,0.25)' }}>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br from-sf-500 to-sf-400" style={{ boxShadow: '0 2px 12px rgba(107,163,255,0.25)' }}>
               <Zap className="w-4.5 h-4.5 text-white" />
             </div>
             <div>
@@ -91,7 +91,7 @@ export const OnboardingGuide: React.FC<OnboardingGuideProps> = ({ isOpen, onClos
                   ? 'bg-sf-500 text-white'
                   : 'text-dim hover:text-sf-200 hover:bg-glass-hover'
               }`}
-              style={activeTab === tab.id ? { boxShadow: '0 2px 12px rgba(124,58,237,0.3)' } : {}}
+              style={activeTab === tab.id ? { boxShadow: '0 2px 12px rgba(107,163,255,0.3)' } : {}}
             >
               {tab.icon}
               {tab.label}

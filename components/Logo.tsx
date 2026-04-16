@@ -16,12 +16,12 @@ export const Logo: React.FC<LogoProps> = ({ size = 32, className = '' }) => (
   >
     <defs>
       <linearGradient id="sf-logo-bg" x1="0" y1="0" x2="32" y2="32">
-        <stop offset="0%" stopColor="#8b5cf6" />
-        <stop offset="100%" stopColor="#7c3aed" />
+        <stop offset="0%" stopColor="#6BA3FF" />
+        <stop offset="100%" stopColor="#4A7FD4" />
       </linearGradient>
       <linearGradient id="sf-logo-inner" x1="8" y1="8" x2="24" y2="24">
         <stop offset="0%" stopColor="#c4b5fd" />
-        <stop offset="100%" stopColor="#a78bfa" />
+        <stop offset="100%" stopColor="#9DC4FF" />
       </linearGradient>
     </defs>
 
