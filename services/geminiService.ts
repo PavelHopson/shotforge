@@ -33,8 +33,9 @@ const getGeminiClient = (): GoogleGenAI => {
   return new GoogleGenAI({ apiKey: getActiveApiKey() });
 };
 
-// Legacy alias for existing code
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// NOTE: the Gemini client is created per-request via getGeminiClient(), which
+// reads the active key (visitor's key from localStorage Settings, then env).
+// Do NOT cache a module-level client — it would freeze the empty build-time key.
 
 // --- Ollama provider ---
 
@@ -129,7 +130,7 @@ export const generateDirectorPrompts = async (config: UserConfig): Promise<strin
       const match = raw.match(/\[[\s\S]*\]/);
       text = match ? match[0] : raw;
     } else {
-      const response = await ai.models.generateContent({
+      const response = await getGeminiClient().models.generateContent({
         model: 'gemini-2.5-flash',
         contents: userPrompt,
         config: {
@@ -160,7 +161,7 @@ export const generateDirectorPrompts = async (config: UserConfig): Promise<strin
  * Uses Gemini 2.5 Flash for speed and multimodal capabilities.
  */
 export const analyzeImageFeatures = async (base64Image: string): Promise<FaceAnalysis> => {
-  if (!process.env.API_KEY) {
+  if (!getActiveApiKey()) {
     console.warn("No API Key provided. Returning mock analysis.");
     return {
       faceShape: "Oval",
@@ -185,7 +186,7 @@ export const analyzeImageFeatures = async (base64Image: string): Promise<FaceAna
       Return ONLY valid JSON.
     `;
 
-    const response = await ai.models.generateContent({
+    const response = await getGeminiClient().models.generateContent({
       model: 'gemini-2.5-flash',
       contents: {
         parts: [
@@ -246,7 +247,7 @@ export const generateImage = async (
     return `https://picsum.photos/${width}/${height}?random=${Date.now()}`;
   }
 
-  if (!process.env.API_KEY) {
+  if (!getActiveApiKey()) {
     // Return a random placeholder if no key
     let width = 1024;
     let height = 1024;
@@ -275,7 +276,7 @@ export const generateImage = async (
       parts.push({ text: "Maintain the facial identity and key physical features of the person in the image, but adapt the style, pose, and background as described." });
     }
 
-    const response = await ai.models.generateContent({
+    const response = await getGeminiClient().models.generateContent({
       model: model,
       contents: { parts },
       config: {
@@ -308,7 +309,7 @@ export const generateImage = async (
  * Useful for style-transfer generation mode.
  */
 export const analyzeImageStyle = async (base64Image: string): Promise<string> => {
-  if (!process.env.API_KEY) {
+  if (!getActiveApiKey()) {
     return "Modern photographic style with balanced natural lighting, warm tones, and clean composition.";
   }
 
@@ -327,7 +328,7 @@ export const analyzeImageStyle = async (base64Image: string): Promise<string> =>
       Respond in English.
     `;
 
-    const response = await ai.models.generateContent({
+    const response = await getGeminiClient().models.generateContent({
       model: 'gemini-2.5-flash',
       contents: {
         parts: [
