@@ -368,7 +368,7 @@ const App: React.FC = () => {
         onHistoryOpen={() => setHistoryOpen(true)}
       />
 
-      <main className="pt-16 pb-20">
+      <main className="pt-16 pb-20 sf-view-enter">
         {mode === 'photographer' && renderPhotographerMode()}
         {mode === 'face-fusion' && <FaceFusionMode />}
         {mode === 'style-transfer' && renderStyleTransferMode()}

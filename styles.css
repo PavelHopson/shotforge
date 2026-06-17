@@ -1,3 +1,17 @@
+:root {
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background: #05070A;
@@ -29,7 +43,7 @@ body {
   border-top: 2px solid rgba(107, 163, 255, 0.3);
   border-left: 2px solid rgba(107, 163, 255, 0.3);
   z-index: 1;
-  transition: all 0.3s;
+  transition: width 0.3s var(--ease), height 0.3s var(--ease), border-color 0.3s var(--ease), filter 0.3s var(--ease);
 }
 .eclipse-card::after {
   content: '';
@@ -39,7 +53,7 @@ body {
   border-bottom: 2px solid rgba(245, 166, 35, 0.2);
   border-right: 2px solid rgba(245, 166, 35, 0.2);
   z-index: 1;
-  transition: all 0.3s;
+  transition: width 0.3s var(--ease), height 0.3s var(--ease), border-color 0.3s var(--ease), filter 0.3s var(--ease);
 }
 .eclipse-card:hover::before {
   width: 18px; height: 18px;
@@ -58,3 +72,10 @@ body {
 
 /* ── Spinner glow ── */
 .spinner-glow { filter: drop-shadow(0 0 8px rgba(107, 163, 255, 0.5)); }
+
+/* ── Content entrance ── */
+@keyframes sf-view-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sf-view-enter { animation: sf-view-enter 0.4s var(--ease) both; }
