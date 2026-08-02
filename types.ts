@@ -127,7 +127,27 @@ export type FusionAssetMap = Partial<Record<FusionAssetType, FusionImageFile>>;
 
 // --- App Mode ---
 
-export type AppMode = 'photographer' | 'face-fusion' | 'style-transfer';
+export type AppMode = 'photographer' | 'face-fusion' | 'style-transfer' | 'release-storyboard';
+
+export type ReleaseVideoFormat = '16:9' | '9:16' | '1:1';
+
+export interface ReleaseStoryboardScene {
+  id: string;
+  start: number;
+  duration: 3;
+  eyebrow: string;
+  headline: string;
+  body: string;
+}
+
+export interface ReleaseStoryboard {
+  schemaVersion: 'eclipse.release-storyboard.v1';
+  title: string;
+  format: ReleaseVideoFormat;
+  duration: 15;
+  publishRequiresApproval: true;
+  scenes: ReleaseStoryboardScene[];
+}
 
 // --- Generation History ---
 

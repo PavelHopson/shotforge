@@ -11,6 +11,7 @@ import { OnboardingGuide } from './components/OnboardingGuide';
 import { HistoryPanel } from './components/HistoryPanel';
 import { CustomPresetModal } from './components/CustomPresetModal';
 import { FaceFusionMode } from './components/FaceFusionMode';
+import { ReleaseStoryboardMode } from './components/ReleaseStoryboardMode';
 import { AppStep, UserConfig, GeneratedPhoto, FaceAnalysis, AppState, AppMode, GenerationProgress, GenerationSession, Preset } from './types';
 import { INITIAL_CONFIG, PRESETS } from './constants';
 import { generateDirectorPrompts, analyzeImageFeatures, generateImage, analyzeImageStyle } from './services/geminiService';
@@ -372,6 +373,7 @@ const App: React.FC = () => {
         {mode === 'photographer' && renderPhotographerMode()}
         {mode === 'face-fusion' && <FaceFusionMode />}
         {mode === 'style-transfer' && renderStyleTransferMode()}
+        {mode === 'release-storyboard' && <ReleaseStoryboardMode />}
       </main>
 
       {/* Footer */}

@@ -15,6 +15,7 @@ const MODE_TABS: { mode: AppMode; label: string; icon: React.ReactNode }[] = [
   { mode: 'photographer', label: 'AI Фотограф', icon: <IconCamera className="w-3.5 h-3.5" size={14} /> },
   { mode: 'face-fusion', label: 'Face Fusion', icon: <IconFaceFusion className="w-3.5 h-3.5" size={14} /> },
   { mode: 'style-transfer', label: 'Стиль', icon: <IconStyleTransfer className="w-3.5 h-3.5" size={14} /> },
+  { mode: 'release-storyboard', label: 'Релизное видео', icon: <IconSparkles className="w-3.5 h-3.5" size={14} /> },
 ];
 
 export const Header: React.FC<HeaderProps> = ({ mode, onModeChange, onSettingsOpen, onGuideOpen, onHistoryOpen }) => {
