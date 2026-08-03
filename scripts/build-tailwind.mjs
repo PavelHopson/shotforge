@@ -8,9 +8,11 @@ const requiredVersion = '3.4.19';
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const require = createRequire(import.meta.url);
 
-let packagePath;
+let packagePath = process.env.SHOTFORGE_TAILWIND_PACKAGE
+  ? resolve(process.env.SHOTFORGE_TAILWIND_PACKAGE)
+  : undefined;
 try {
-  packagePath = require.resolve('tailwindcss/package.json', { paths: [root] });
+  packagePath ??= require.resolve('tailwindcss/package.json', { paths: [root] });
 } catch {
   throw new Error(`Local tailwindcss@${requiredVersion} is required. Refusing an implicit network install.`);
 }

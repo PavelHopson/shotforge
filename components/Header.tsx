@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({ mode, onModeChange, onSettingsOp
       </div>
 
       {/* Mobile tabs */}
-      <div className="md:hidden border-t border-glass-border px-3 py-2 flex gap-1 overflow-x-auto">
+      <div className="scrollbar-none md:hidden border-t border-glass-border px-3 py-2 flex gap-1 overflow-x-auto">
         {MODE_TABS.map((tab) => (
           <button
             key={tab.mode}

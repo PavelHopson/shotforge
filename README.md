@@ -182,7 +182,9 @@ Tailwind не исполняется в браузере и не загружа�
 `npm run css:build`, проверьте CSS diff и только затем запускайте production build.
 Если exact package ещё не добавлен в devDependencies, дождитесь доступного npm registry и
 добавьте его вместе с lockfile отдельным reviewed dependency change. Текущий production build
-использует committed CSS и не требует Tailwind CLI.
+использует committed CSS и не требует Tailwind CLI. Для уже проверенного package вне repository
+можно явно передать абсолютный путь к его `package.json` через `SHOTFORGE_TAILWIND_PACKAGE`;
+скрипт всё равно проверит exact version до исполнения.
 
 ---
 

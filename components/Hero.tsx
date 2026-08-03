@@ -27,8 +27,7 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-sf-400 via-sf-300 to-sf-400" style={{ backgroundSize: '200% auto', animation: 'shimmer 4s ease infinite' }}>
             фотосессия
           </span>
-          <br className="hidden sm:block" />
-          за 3 минуты
+          <span className="block">за 3 минуты</span>
         </h1>
 
         {/* Subtitle */}

@@ -43,6 +43,12 @@ body {
 ::-webkit-scrollbar-thumb { background: #1C2536; border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: #6BA3FF; }
 
+.scrollbar-none {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
 /* ── Cyber grid ── */
 body {
   background-image:
