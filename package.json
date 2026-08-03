@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc --noEmit",
-    "build": "vite build",
+    "css:build": "node scripts/build-tailwind.mjs",
+    "css:verify": "node scripts/tailwind-integrity.mjs check",
+    "build": "npm run css:verify && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -143,7 +143,7 @@ Gemini 2.5 Flash умеет генерировать изображения на
 |-----------|------|
 | React 19 + TypeScript | UI компоненты |
 | Vite 6 | Сборка |
-| Tailwind CSS | Стили (dark theme) |
+| Tailwind CSS 3.4.19 | Статический проверяемый CSS; runtime CDN отсутствует |
 | Google Gemini AI | Креативный директор + генерация |
 | Lucide React | Иконки |
 
@@ -166,12 +166,23 @@ npm run dev
 ### Сборка и деплой
 
 ```bash
+# Проверяет SHA-256 source/output manifest для committed CSS
+npm run css:verify
 npm run build
 # → dist/
 
 # Cloudflare Pages
 npx wrangler pages deploy dist --project-name=shotforge
 ```
+
+Tailwind не исполняется в браузере и не загружается с CDN. `styles.generated.css` собирается
+только локально точной версией `tailwindcss@3.4.19`; отсутствие локального package или другая
+версия fail closed, а не запускает сетевую установку. `styles.generated.integrity.json` связывает SHA-256
+исходников и результата. После изменения class names или `styles.css` выполните
+`npm run css:build`, проверьте CSS diff и только затем запускайте production build.
+Если exact package ещё не добавлен в devDependencies, дождитесь доступного npm registry и
+добавьте его вместе с lockfile отдельным reviewed dependency change. Текущий production build
+использует committed CSS и не требует Tailwind CLI.
 
 ---
 
@@ -181,6 +192,9 @@ npx wrangler pages deploy dist --project-name=shotforge
 shotforge/
 ├── App.tsx                  # Главный компонент (3 режима)
 ├── index.tsx                # Точка входа
+├── styles.css               # Tailwind input + собственные стили
+├── styles.generated.css     # Проверенный статический production CSS
+├── tailwind.config.cjs      # Зафиксированные design tokens/content paths
 ├── types.ts                 # TypeScript типы
 ├── constants.ts             # 21 пресет стилей
 ├── components/
