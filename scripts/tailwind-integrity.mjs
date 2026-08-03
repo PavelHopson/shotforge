@@ -9,6 +9,10 @@ const outputPath = resolve(root, 'styles.generated.css');
 const sourceExtensions = new Set(['.ts', '.tsx', '.html', '.css', '.cjs']);
 const ignoredDirectories = new Set(['.git', '.wrangler', 'dist', 'node_modules']);
 
+async function readNormalizedText(path) {
+  return (await readFile(path, 'utf8')).replaceAll('\r\n', '\n');
+}
+
 async function collectFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
@@ -31,14 +35,14 @@ async function hashSources() {
   for (const file of files) {
     hash.update(relative(root, file).replaceAll('\\', '/'));
     hash.update('\0');
-    hash.update(await readFile(file));
+    hash.update(await readNormalizedText(file));
     hash.update('\0');
   }
   return hash.digest('hex');
 }
 
 async function hashFile(path) {
-  return createHash('sha256').update(await readFile(path)).digest('hex');
+  return createHash('sha256').update(await readNormalizedText(path)).digest('hex');
 }
 
 const mode = process.argv[2];
