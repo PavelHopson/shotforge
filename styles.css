@@ -1,8 +1,50 @@
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/inter-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/fonts/outfit-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/fonts/outfit-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  --ef-bg: #05070A;
+  --ef-surface: #0C1117;
+  --ef-surface-hover: #111820;
+  --ef-text: #F2F5F9;
+  --ef-secondary: #C4CED8;
+  --ef-muted: #94A3B8;
+  --ef-line: #1C2536;
+  --ef-signal: #6BA3FF;
+  --ef-gold: #D4AF37;
   --ease: cubic-bezier(.22, .61, .36, 1);
   --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
 }
@@ -76,8 +118,8 @@ body {
   position: absolute;
   bottom: 0; right: 0;
   width: 10px; height: 10px;
-  border-bottom: 2px solid rgba(245, 166, 35, 0.2);
-  border-right: 2px solid rgba(245, 166, 35, 0.2);
+  border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+  border-right: 2px solid rgba(212, 175, 55, 0.2);
   z-index: 1;
   transition: width 0.3s var(--ease), height 0.3s var(--ease), border-color 0.3s var(--ease), filter 0.3s var(--ease);
 }
@@ -88,13 +130,13 @@ body {
 }
 .eclipse-card:hover::after {
   width: 18px; height: 18px;
-  border-color: rgba(245, 166, 35, 0.4);
-  filter: drop-shadow(0 0 4px rgba(245, 166, 35, 0.3));
+  border-color: rgba(212, 175, 55, 0.4);
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.3));
 }
 
 /* ── Text glow ── */
 .text-glow { text-shadow: 0 0 20px rgba(107, 163, 255, 0.4); }
-.text-glow-warm { text-shadow: 0 0 20px rgba(245, 166, 35, 0.4); }
+.text-glow-warm { text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
 /* ── Spinner glow ── */
 .spinner-glow { filter: drop-shadow(0 0 8px rgba(107, 163, 255, 0.5)); }
@@ -105,3 +147,27 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 .sf-view-enter { animation: sf-view-enter 0.4s var(--ease) both; }
+
+/* Eclipse Forge visual contract v1 — product profile. */
+.forge-product-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 86% 4%, rgba(212,175,55,.075), transparent 26rem),
+    radial-gradient(circle at 12% 90%, rgba(107,163,255,.07), transparent 32rem);
+}
+.forge-product-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(107,163,255,.7) 38%, rgba(212,175,55,.56) 68%, transparent);
+}
+.forge-product-shell > * { position: relative; z-index: 2; }
+.forge-product-shell h1,
+.forge-product-shell h2,
+.forge-product-shell h3 { font-family: Outfit, Inter, ui-sans-serif, system-ui, sans-serif; }
+.forge-product-shell :focus-visible { outline: 2px solid var(--ef-signal); outline-offset: 3px; }

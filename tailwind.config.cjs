@@ -33,7 +33,7 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['"SFMono-Regular"', 'Consolas', '"Liberation Mono"', 'monospace'],
-        outfit: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        outfit: ['Outfit', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       animation: {
         glow: 'glow 3s ease-in-out infinite',

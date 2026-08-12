@@ -239,3 +239,8 @@ shotforge/
 <div align="center">
 <sub>Сделано с ⚡ в Eclipse Forge</sub>
 </div>
+## Eclipse Forge visual contract
+
+Shotforge uses the local `eclipse-forge.visual-system.v1` snapshot in the `product` profile: self-hosted Outfit/Inter typography, signal-blue actions, warm-gold accents, grid/grain depth and reduced-motion-safe reveals. The contract is local and does not create a runtime dependency on the Landing.
+
+Visual pilot verified on 2026-08-12 with generated Tailwind integrity, TypeScript and production build.
