@@ -1,4 +1,3 @@
-import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from "@google/genai";
 import { UserConfig, Preset, FaceAnalysis, AspectRatio, ImageResolution, AIProviderConfig, AIProvider, FusionAssetMap, FusionAssetType } from "../types";
 import { PRESETS } from "../constants";
 
@@ -13,7 +12,7 @@ export const getAIConfig = (): AIProviderConfig => {
   } catch { /* ignore */ }
   return {
     provider: 'gemini',
-    apiKey: process.env.API_KEY || '',
+    apiKey: '',
     model: 'gemini-2.5-flash'
   };
 };
@@ -22,14 +21,15 @@ export const saveAIConfig = (config: AIProviderConfig): void => {
   localStorage.setItem(AI_CONFIG_KEY, JSON.stringify(config));
 };
 
-// Get active API key: localStorage config takes priority, then env
+// Keys are visitor-provided and stay in localStorage. Never embed build-time secrets.
 const getActiveApiKey = (): string => {
   const config = getAIConfig();
-  return config.apiKey || process.env.API_KEY || '';
+  return config.apiKey || '';
 };
 
-// Initialize Gemini Client (lazy, uses active key)
-const getGeminiClient = (): GoogleGenAI => {
+// Load the provider SDK only when the visitor starts an AI action.
+const getGeminiClient = async () => {
+  const { GoogleGenAI } = await import('@google/genai');
   return new GoogleGenAI({ apiKey: getActiveApiKey() });
 };
 
@@ -130,7 +130,7 @@ export const generateDirectorPrompts = async (config: UserConfig): Promise<strin
       const match = raw.match(/\[[\s\S]*\]/);
       text = match ? match[0] : raw;
     } else {
-      const response = await getGeminiClient().models.generateContent({
+      const response = await (await getGeminiClient()).models.generateContent({
         model: 'gemini-2.5-flash',
         contents: userPrompt,
         config: {
@@ -186,7 +186,7 @@ export const analyzeImageFeatures = async (base64Image: string): Promise<FaceAna
       Return ONLY valid JSON.
     `;
 
-    const response = await getGeminiClient().models.generateContent({
+    const response = await (await getGeminiClient()).models.generateContent({
       model: 'gemini-2.5-flash',
       contents: {
         parts: [
@@ -276,7 +276,7 @@ export const generateImage = async (
       parts.push({ text: "Maintain the facial identity and key physical features of the person in the image, but adapt the style, pose, and background as described." });
     }
 
-    const response = await getGeminiClient().models.generateContent({
+    const response = await (await getGeminiClient()).models.generateContent({
       model: model,
       contents: { parts },
       config: {
@@ -328,7 +328,7 @@ export const analyzeImageStyle = async (base64Image: string): Promise<string> =>
       Respond in English.
     `;
 
-    const response = await getGeminiClient().models.generateContent({
+    const response = await (await getGeminiClient()).models.generateContent({
       model: 'gemini-2.5-flash',
       contents: {
         parts: [
@@ -356,7 +356,7 @@ export const analyzeImageStyle = async (base64Image: string): Promise<string> =>
  * Analyzes multiple asset images to create a unified descriptive prompt for face fusion.
  */
 export const analyzeFusionAssets = async (assets: FusionAssetMap): Promise<string> => {
-  const client = getGeminiClient();
+  const client = await getGeminiClient();
 
   const parts: any[] = [];
 
@@ -414,7 +414,7 @@ export const generateFusionImage = async (
   prompt: string,
   aspectRatio: AspectRatio
 ): Promise<string> => {
-  const client = getGeminiClient();
+  const client = await getGeminiClient();
   const model = 'gemini-2.5-flash-image';
 
   const systemInstruction = `
@@ -470,13 +470,6 @@ export const generateFusionImage = async (
       imageConfig: {
         aspectRatio: aspectRatio,
       },
-      safetySettings: [
-        { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-        { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
-        { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
-        { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-        { category: HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY, threshold: HarmBlockThreshold.BLOCK_NONE }
-      ]
     }
   });
 

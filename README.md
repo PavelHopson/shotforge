@@ -169,12 +169,14 @@ git clone https://github.com/PavelHopson/shotforge.git
 cd shotforge
 npm install
 
-# Создать .env
-echo "GEMINI_API_KEY=ваш_ключ" > .env
-
 npm run dev
 # → http://localhost:3000
 ```
+
+
+API-ключ задаётся только в интерфейсе через **Настройки** и сохраняется в localStorage
+текущего браузера. Build-time .env для ключа не используется: секрет не должен попадать
+в JavaScript bundle. На общем устройстве удалите ключ из настроек после работы.
 
 ### Сборка и деплой
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { UploadSection } from './components/UploadSection';
@@ -6,16 +6,17 @@ import { ConfigPanel } from './components/ConfigPanel';
 import { PromptEditor } from './components/PromptEditor';
 import { ProgressOverlay } from './components/ProgressOverlay';
 import { ResultsGallery } from './components/ResultsGallery';
-import { SettingsPanel } from './components/SettingsPanel';
-import { OnboardingGuide } from './components/OnboardingGuide';
-import { HistoryPanel } from './components/HistoryPanel';
-import { CustomPresetModal } from './components/CustomPresetModal';
-import { FaceFusionMode } from './components/FaceFusionMode';
-import { ReleaseStoryboardMode } from './components/ReleaseStoryboardMode';
 import { AppStep, UserConfig, GeneratedPhoto, FaceAnalysis, AppState, AppMode, GenerationProgress, GenerationSession, Preset } from './types';
 import { INITIAL_CONFIG, PRESETS } from './constants';
 import { generateDirectorPrompts, analyzeImageFeatures, generateImage, analyzeImageStyle } from './services/geminiService';
 import { saveSession } from './services/historyService';
+
+const SettingsPanel = lazy(() => import('./components/SettingsPanel').then((module) => ({ default: module.SettingsPanel })));
+const OnboardingGuide = lazy(() => import('./components/OnboardingGuide').then((module) => ({ default: module.OnboardingGuide })));
+const HistoryPanel = lazy(() => import('./components/HistoryPanel').then((module) => ({ default: module.HistoryPanel })));
+const CustomPresetModal = lazy(() => import('./components/CustomPresetModal').then((module) => ({ default: module.CustomPresetModal })));
+const FaceFusionMode = lazy(() => import('./components/FaceFusionMode').then((module) => ({ default: module.FaceFusionMode })));
+const ReleaseStoryboardMode = lazy(() => import('./components/ReleaseStoryboardMode').then((module) => ({ default: module.ReleaseStoryboardMode })));
 
 const App: React.FC = () => {
   // --- Mode & Panels ---
@@ -370,10 +371,12 @@ const App: React.FC = () => {
       />
 
       <main className="pt-16 pb-20 sf-view-enter">
-        {mode === 'photographer' && renderPhotographerMode()}
-        {mode === 'face-fusion' && <FaceFusionMode />}
-        {mode === 'style-transfer' && renderStyleTransferMode()}
-        {mode === 'release-storyboard' && <ReleaseStoryboardMode />}
+        <Suspense fallback={<div role="status" className="mx-auto max-w-4xl px-4 py-24 text-center text-sm text-dim">Загружаем рабочее пространство…</div>}>
+          {mode === 'photographer' && renderPhotographerMode()}
+          {mode === 'face-fusion' && <FaceFusionMode />}
+          {mode === 'style-transfer' && renderStyleTransferMode()}
+          {mode === 'release-storyboard' && <ReleaseStoryboardMode />}
+        </Suspense>
       </main>
 
       {/* Footer */}
@@ -388,10 +391,12 @@ const App: React.FC = () => {
       </footer>
 
       {/* Modals & Panels */}
-      <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
-      <OnboardingGuide isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
-      <HistoryPanel isOpen={historyOpen} onClose={() => setHistoryOpen(false)} onLoadSession={handleLoadSession} />
-      <CustomPresetModal isOpen={customPresetOpen} onClose={() => setCustomPresetOpen(false)} onCreated={handleCustomPresetCreated} />
+      <Suspense fallback={null}>
+        {settingsOpen && <SettingsPanel isOpen onClose={() => setSettingsOpen(false)} />}
+        {guideOpen && <OnboardingGuide isOpen onClose={() => setGuideOpen(false)} />}
+        {historyOpen && <HistoryPanel isOpen onClose={() => setHistoryOpen(false)} onLoadSession={handleLoadSession} />}
+        {customPresetOpen && <CustomPresetModal isOpen onClose={() => setCustomPresetOpen(false)} onCreated={handleCustomPresetCreated} />}
+      </Suspense>
     </div>
   );
 };
