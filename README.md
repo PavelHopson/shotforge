@@ -18,14 +18,27 @@
 
 ## Что это
 
-Shotforge — виртуальная AI-фотостудия с тремя режимами:
+Shotforge — виртуальная AI-фотостудия с несколькими специализированными режимами:
 
 | Режим | Описание |
 |-------|----------|
 | **AI Фотограф** | Выбираешь стиль (21 пресет) → настраиваешь параметры → AI генерирует профессиональные снимки |
+| **Desktop Creator Kit** | Создаёшь fail-closed JSON-план записи для Eclipse Media: ShareX local-only или FocuSee только для публичного demo, без auto-upload, plugins, servers и history |
 | **Face Fusion** | Загружаешь своё фото + одежду/стиль → AI совмещает в одно изображение |
+
 | **Style Transfer** | Загружаешь референс → AI переносит стиль на твоё фото |
 | **Релизное видео** | Описываешь релиз → получаешь проверяемую 15-секундную раскадровку JSON для Eclipse Media в форматах 16:9, 9:16 или 1:1 |
+## Безопасный handoff в Eclipse Media
+
+Режим «Релизное видео» теперь экспортирует два независимых контракта:
+
+- `eclipse.release-storyboard.v1` — текст и timing пяти сцен;
+- `eclipse.creator-capture-plan.v1` — разрешённый desktop capture workflow.
+
+Capture plan создаётся только после подтверждения прав и отсутствия секретов/клиентских данных.
+Он не устанавливает и не запускает ShareX, QuickLook, Everything или FocuSee. Cloud upload,
+plugins, network servers и history закреплены `false`; публикация требует ручного approval.
+
 
 ---
 
