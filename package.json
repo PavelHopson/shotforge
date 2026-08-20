@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "css:build": "node scripts/build-tailwind.mjs",
     "css:verify": "node scripts/tailwind-integrity.mjs check",

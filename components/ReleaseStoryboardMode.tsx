@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { createReleaseStoryboard } from '../services/releaseStoryboardService';
 import { createCreatorCapturePlan, type CaptureContentClass, type CaptureRecorder } from '../services/creatorCapturePlanService';
 import type { ReleaseVideoFormat } from '../types';
+import { VideoAdPipeline } from './VideoAdPipeline';
 
 const formats: ReleaseVideoFormat[] = ['16:9', '9:16', '1:1'];
 
@@ -135,6 +136,7 @@ export const ReleaseStoryboardMode: React.FC = () => {
           <p className="mt-5 text-xs leading-5 text-dim">JSON не публикует видео и не содержит API-ключей. После render пользователь отдельно проверяет preview и подтверждает публикацию.</p>
         </div>
       </div>
+      <VideoAdPipeline />
     </section>
   );
 };
