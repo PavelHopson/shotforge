@@ -16,3 +16,6 @@
 
 - 2026-08-20: added the Reference Board → video ad workflow with local import, loading/empty/error/success/
   disabled states, strict provenance origin allowlist and explicit preview approval before export.
+- 2026-08-20: completed real Edge/Playwright acceptance at 1440x900 and 390x844 for board import,
+  three-scene preview and manual export approval. Added an explicit keyboard-focus treatment; reduced
+  motion, responsive overflow and console/page/request error checks pass.

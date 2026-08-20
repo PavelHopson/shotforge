@@ -62,7 +62,7 @@ export const VideoAdPipeline: React.FC = () => {
           <h3 className="text-lg font-bold text-sf-50">Preview структуры</h3>
           {!plan ? <div className="mt-4 rounded-xl border border-dashed border-glass-border p-8 text-center text-sm text-dim">Импортируйте board и заполните hook, proof и action.</div> : <ol className="mt-4 space-y-3">{plan.plan.scenes.map((scene) => <li key={scene.id} className="grid grid-cols-[48px_1fr] gap-3 rounded-xl border border-glass-border bg-bg-3 p-4"><span className="font-mono text-xs text-sf-400">{scene.start}–{scene.start + 5}s</span><div><strong className="text-sf-50">{scene.purpose}</strong><p className="mt-1 text-sm text-dim">{scene.copy}</p></div></li>)}</ol>}
           <label className="mt-5 flex gap-3 text-sm text-sf-200"><input type="checkbox" disabled={!plan} checked={previewApproved} onChange={(event) => setPreviewApproved(event.target.checked)} /> Я просмотрел все сцены, проверил claims и соответствие референсов</label>
-          <button type="button" disabled={!plan || !previewApproved} onClick={download} className="mt-4 w-full rounded-xl bg-sf-500 px-4 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">Экспортировать план для Eclipse Media</button>
+          <button type="button" disabled={!plan || !previewApproved} onClick={download} className="mt-4 w-full rounded-xl bg-sf-500 px-4 py-3 font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sf-300 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-3 disabled:cursor-not-allowed disabled:opacity-40">Экспортировать план для Eclipse Media</button>
         </div>
       </div>
     </section>
