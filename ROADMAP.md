@@ -19,3 +19,5 @@
 - 2026-08-20: completed real Edge/Playwright acceptance at 1440x900 and 390x844 for board import,
   three-scene preview and manual export approval. Added an explicit keyboard-focus treatment; reduced
   motion, responsive overflow and console/page/request error checks pass.
+
+- 2026-08-22: assigned the `editorial-spatial` profile with restrained gold atmosphere and shallow pointer-only depth. Regenerated and integrity-stamped the pinned Tailwind output; typecheck, tests, CSS integrity and production build pass. Rendering, claims and publication gates are unchanged.

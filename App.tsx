@@ -361,7 +361,7 @@ const App: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background text-foreground antialiased selection:bg-sf-500/30 mesh-bg grain forge-product-shell" data-visual-profile="product">
+    <div className="min-h-screen bg-background text-foreground antialiased selection:bg-sf-500/30 mesh-bg grain forge-product-shell" data-visual-profile="editorial-spatial">
       <Header
         mode={mode}
         onModeChange={handleModeChange}

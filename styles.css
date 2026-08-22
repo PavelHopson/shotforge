@@ -171,3 +171,18 @@ body {
 .forge-product-shell h2,
 .forge-product-shell h3 { font-family: Outfit, Inter, ui-sans-serif, system-ui, sans-serif; }
 .forge-product-shell :focus-visible { outline: 2px solid var(--ef-signal); outline-offset: 3px; }
+/* Visual profile: editorial studio + lightweight spatial depth. */
+.forge-product-shell[data-visual-profile="editorial-spatial"] {
+  background:
+    radial-gradient(circle at 78% 8%, rgba(212,175,55,.09), transparent 30rem),
+    linear-gradient(180deg, #05070a, #080a0f 62%, #05070a);
+}
+.forge-product-shell[data-visual-profile="editorial-spatial"] h1,
+.forge-product-shell[data-visual-profile="editorial-spatial"] h2 { letter-spacing: -.035em; text-wrap: balance; }
+.forge-product-shell[data-visual-profile="editorial-spatial"] main { perspective: 1400px; }
+@media (hover:hover) and (pointer:fine) {
+  .forge-product-shell[data-visual-profile="editorial-spatial"] .eclipse-card:hover { transform: translateY(-2px) translateZ(7px); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .forge-product-shell[data-visual-profile="editorial-spatial"] .eclipse-card { transform: none !important; }
+}
