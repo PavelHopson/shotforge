@@ -1,20 +1,64 @@
-<div align="center">
+# ShotForge
 
-# ⚡ Shotforge
+![ShotForge: Концепция → Сцены → Материалы](docs/assets/repository-cover.svg)
 
-### AI-фотостудия — профессиональные фотосессии за 3 минуты
+**AI-студия.** Работа с визуальными концепциями, сценами и AI-материалами с передачей результата в медиа-процесс.
 
-[![Демо](https://img.shields.io/badge/ДЕМО-shotforge.pages.dev-7c3aed?style=for-the-badge&logo=cloudflarepages&logoColor=white)](https://shotforge.pages.dev)
-[![React 19](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
-[![Gemini AI](https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev)
-[![MIT](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](LICENSE)
+<!-- repository-guide:start -->
+[Интерфейс](#readme-interface) · [Первый запуск](#readme-start) · [Что внутри](#readme-map) · [Путеводитель](docs/repository-guide.md#start) · [Карта кода](docs/repository-guide.md#map) · [Проверки](docs/repository-guide.md#checks) · [Границы и права](docs/repository-guide.md#boundaries)
 
-**[→ Открыть демо](https://shotforge.pages.dev)**
+<a id="readme-interface"></a>
 
-</div>
+## Интерфейс
 
----
+![ShotForge — Стартовая страница ShotForge: выбор направления и вход в сценарий AI-фотосессии.](docs/assets/ui/overview.png)
+
+**Стартовая страница ShotForge: выбор направления и вход в сценарий AI-фотосессии.**
+
+Локальный снимок от 8 сентября 2026: отдельный профиль браузера, без внешних API и пользовательских секретов. Это вид интерфейса, не подтверждение production-функций.
+
+<details>
+<summary><strong>Мобильный экран · 390 px</strong></summary>
+
+<img src="docs/assets/ui/mobile.png" alt="ShotForge — мобильный экран" width="390">
+
+</details>
+
+[Открыть в полном размере](docs/assets/ui/overview.png) · [Данные снимка](docs/assets/ui/capture.json)
+
+<a id="readme-map"></a>
+
+## Проект за минуту
+
+- **[Сториборд](<components/ReleaseStoryboardMode.tsx>)** — Интерфейс подготовки последовательности сцен.
+- **[Референсы](<services/referenceBoardService.ts>)** — Работа с визуальной доской проекта.
+- **[Передача в Media](<services/releaseStoryboardService.ts>)** — Подготовка структурированного плана, не автоматический render.
+
+<a id="readme-start"></a>
+
+## Начать локально
+
+**Среда:** Node.js и npm. **Источник:** [package.json](<package.json>).
+
+Из корня клонированного репозитория:
+
+```bash
+npm ci
+npm run dev
+```
+
+Интерфейс и внешние AI-вызовы — разные этапы. До подключения провайдера проверьте настройки, стоимость и обработку ключей; значения секретов в README не размещаются.
+
+<details>
+<summary><strong>Перед первым запуском и изменением кода</strong></summary>
+
+- Команды сверены с исходниками 8 сентября 2026. Это инструкция, а не отметка об успешном запуске или текущем production.
+- Установка зависимостей может обращаться в registry и выполнять lifecycle scripts. Используйте отдельную рабочую среду и демонстрационные данные.
+- Генерация зависит от провайдера, ключей и стоимости. Передача плана в Media не равна запуску генерации или публикации.
+- [ROADMAP.md](<ROADMAP.md>)
+
+</details>
+<!-- repository-guide:end -->
 
 ## Что это
 

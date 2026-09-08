@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+<title id="title">ShotForge</title>
+<desc id="desc">AI-студия. Концепция → Сцены → Материалы. Редакционная схема проекта, не скриншот приложения.</desc>
+<!-- ECLIPSE FORGE / PROJECT NOTES — locally generated artwork; no external assets -->
+<defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#1C2536" stroke-width=".5"/></pattern><linearGradient id="shade"><stop stop-color="#05070A"/><stop offset="1" stop-color="#0D1420"/></linearGradient></defs>
+<rect width="1200" height="360" fill="url(#shade)"/>
+<rect x="808" y="0" width="392" height="250" fill="url(#grid)" opacity=".6"/>
+<path d="M48 66H1152M48 235H1152M48 309H1152" stroke="#283345"/>
+<path d="M48 66H124" stroke="#D4AF37" stroke-width="3"/>
+<g font-family="Arial, sans-serif">
+<text x="48" y="41" fill="#AAB6C5" font-size="12" letter-spacing="2.4">ECLIPSE FORGE / SOURCE NOTES</text>
+<text x="1152" y="41" text-anchor="end" fill="#D4AF37" font-size="12" letter-spacing="1.5">PROJECT 21</text>
+<text x="46" y="149" fill="#F2F5F9" font-size="62" font-weight="700" letter-spacing="-1">ShotForge</text>
+<text x="49" y="191" fill="#B7C2CF" font-size="20">AI-студия</text>
+<text x="48" y="278" fill="#D4AF37" font-size="12">01</text><text x="80" y="280" fill="#F2F5F9" font-size="18">Концепция</text><path d="M328 272h39m-7-4 7 4-7 4" fill="none" stroke="#687A92"/>
+<text x="422" y="278" fill="#D4AF37" font-size="12">02</text><text x="454" y="280" fill="#F2F5F9" font-size="18">Сцены</text><path d="M702 272h39m-7-4 7 4-7 4" fill="none" stroke="#687A92"/>
+<text x="796" y="278" fill="#D4AF37" font-size="12">03</text><text x="828" y="280" fill="#F2F5F9" font-size="18">Материалы</text>
+<text x="48" y="337" fill="#AAB6C5" font-size="11" letter-spacing="1.8">КРЕАТИВНЫЕ ИНСТРУМЕНТЫ</text>
+<text x="1152" y="337" text-anchor="end" fill="#AAB6C5" font-size="11" letter-spacing="1.8">ОБЗОР / ИСХОДНИКИ / ПЕРВЫЙ ЗАПУСК</text>
+</g>
+<g transform="translate(992 148) scale(.78)" fill="none" stroke="#D4AF37" color="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".8"><path d="M-88-64H-50M-88-64V-26M88-64H50M88-64V-26M-88 52H-50M-88 52V14M88 52H50M88 52V14"/><path d="M-28-34L36-6-28 22Z"/><path d="M-93 80H93M-65 68V92M-26 74V86M14 68V92M54 74V86"/></g>
+</svg>

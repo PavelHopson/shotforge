@@ -8,12 +8,62 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: deploy-vps
-  cancel-in-progress: true
-
 jobs:
+  deployment-scope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      checks: read
+    outputs:
+      required: ${{ steps.scope.outputs.required }}
+    steps:
+      - name: Classify the complete source push without executing repository code
+        id: scope
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        with:
+          script: |
+            async function deploymentScope({github,context,bootstrapBase,bootstrapFiles}) {
+              const event=context.eventName;
+              const repo=context.repo;
+              let before=context.payload.before;
+              let after=context.sha;
+              if(event==='workflow_dispatch') return true;
+              if(event==='workflow_run') {
+                const run=context.payload.workflow_run;
+                if(run?.event!=='push'||run.conclusion!=='success'||run.head_repository?.full_name!==`${repo.owner}/${repo.repo}`) return false;
+                if(!Number.isSafeInteger(run.check_suite_id)) throw Error('Missing source push check suite');
+                const {data:suite}=await github.rest.checks.getSuite({...repo,check_suite_id:run.check_suite_id});
+                if(suite.head_sha!==run.head_sha||suite.after!==run.head_sha||suite.head_branch!==run.head_branch) throw Error('Source push mismatch');
+                before=suite.before; after=suite.after;
+              } else if(event!=='push') return false;
+              const valid=v=>typeof v==='string'&&/^[a-f0-9]{40}$/.test(v)&&!/^0+$/.test(v);
+              if(!valid(before)||!valid(after)||before===after) throw Error('Unknown push range: deployment requires manual review');
+              const {data:comparison}=await github.rest.repos.compareCommitsWithBasehead({...repo,basehead:`${before}...${after}`,per_page:100,page:1});
+              // The Compare API returns at most 300 changed files, even with pagination.
+              // Fail closed at that boundary instead of guessing that omitted files are documentation.
+              if(comparison.status!=='ahead'||comparison.behind_by!==0||comparison.merge_base_commit?.sha!==before||!Array.isArray(comparison.files)||comparison.files.length===0||comparison.files.length>=300) throw Error('Incomplete change list: deployment requires manual review');
+              const documentation=p=>p==='README.md'||p==='docs/repository-guide.md'||p==='docs/assets/repository-cover.svg'||p.startsWith('docs/assets/ui/')||p.startsWith('docs/portfolio/');
+              const knownPath=p=>typeof p==='string'&&p.length>0&&!p.includes('..')&&!p.includes('\\')&&!p.startsWith('/');
+              const ignored=p=>documentation(p)||(before===bootstrapBase&&bootstrapFiles.includes(p));
+              for(const file of comparison.files){
+                if(!knownPath(file.filename)||(file.previous_filename!==undefined&&!knownPath(file.previous_filename))) throw Error('Invalid changed path');
+                // A rename from runtime into docs still changes runtime.
+                if(!ignored(file.filename)||(file.previous_filename&&!ignored(file.previous_filename))) return true;
+              }
+              return false;
+            }
+            const required = await deploymentScope({ github, context, bootstrapBase: "1d9e4f83376107ee7e7b0a77b0ddaae8b8a1e23c", bootstrapFiles: ["README.md","docs/repository-guide.md","docs/assets/repository-cover.svg","docs/assets/ui/overview.png","docs/assets/ui/mobile.png","docs/assets/ui/capture.json",".github/workflows/deploy-vps.yml"] });
+            core.setOutput('required', String(required));
+            core.info(required ? 'Runtime changes: existing deployment gates remain in force.' : 'Presentation-only change: deployment is not required.');
+
   deploy:
+    needs: ["deployment-scope"]
+    if: >-
+      needs.deployment-scope.outputs.required == 'true'
+    concurrency:
+      group: deploy-vps
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6

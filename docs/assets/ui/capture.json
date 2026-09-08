@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "project": "shotforge",
+  "capturedAt": "2026-09-08T09:49:33.438Z",
+  "caption": "Стартовая страница ShotForge: выбор направления и вход в сценарий AI-фотосессии.",
+  "method": "isolated-local-source-preview",
+  "context": "Local source preview, clean browser storage, reduced motion, no .env, external resources and backend APIs blocked. Repository content only, no additional fixtures or personal history; no production verification.",
+  "sourceHead": "1d9e4f83376107ee7e7b0a77b0ddaae8b8a1e23c",
+  "sourceWorktreeDirty": true,
+  "entryFiles": [
+    {
+      "file": "index.html",
+      "sha256": "0cd9613618aaa9ae1f1bc740f59f50995ae5c3785970b0ab96bb562616d19133"
+    },
+    {
+      "file": "package.json",
+      "sha256": "10d6ae91fe510032ab7abbd1d80f6288e7fa444d41e767ce090ee50fe8914593"
+    },
+    {
+      "file": "index.tsx",
+      "sha256": "d1453e3525c0273381c417426bdea403b5068700a730f59f38a7642f11f06a24"
+    }
+  ],
+  "screenshots": [
+    {
+      "kind": "overview",
+      "file": "overview.png",
+      "width": 1440,
+      "height": 900,
+      "sha256": "db15d25e9840fa7038be4a4be9f9983a04c0bd2248f6efc48a7658adb357efce",
+      "bytes": 1045316
+    },
+    {
+      "kind": "mobile",
+      "file": "mobile.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "6d7029fbae35566004cbbd382de6f9d3c423db06912cc679ca959d79c06150bc",
+      "bytes": 334562
+    }
+  ],
+  "review": "Desktop and selected mobile captures visually reviewed before documentation use."
+}
