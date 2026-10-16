@@ -1,5 +1,9 @@
 # ShotForge
 
+<!-- project-links:start -->
+[Открыть веб-версию](https://shotforge.pages.dev) · [Документация](docs/repository-guide.md) · [Код](https://github.com/PavelHopson/shotforge/tree/main) · [История изменений](https://github.com/PavelHopson/shotforge/commits/main/)
+<!-- project-links:end -->
+
 ![ShotForge: Концепция → Сцены → Материалы](docs/assets/repository-cover.svg)
 
 **AI-студия.** Работа с визуальными концепциями, сценами и AI-материалами с передачей результата в медиа-процесс.
@@ -86,7 +90,9 @@ plugins, network servers и history закреплены `false`; публика
 
 ---
 
-## Product radar
+<a id="product-radar"></a>
+
+## Источники и идеи развития
 
 Источник: [Eclipse Library · July 2026 project integration](https://library.eclipse-forge.ru/#guide/july-2026-project-integration).
 
@@ -283,7 +289,9 @@ shotforge/
 <div align="center">
 <sub>Сделано с ⚡ в Eclipse Forge</sub>
 </div>
-## Eclipse Forge visual contract
+<a id="eclipse-forge-visual-contract"></a>
+
+## Визуальный стандарт Eclipse Forge
 
 Shotforge uses the local `eclipse-forge.visual-system.v1` snapshot in the `product` profile: self-hosted Outfit/Inter typography, signal-blue actions, warm-gold accents, grid/grain depth and reduced-motion-safe reveals. The contract is local and does not create a runtime dependency on the Landing.
 
